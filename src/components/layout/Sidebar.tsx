@@ -13,10 +13,12 @@ import {
   CalendarCheck,
   Map,
   BarChart3,
-  Settings
+  Settings,
+  ShieldAlert
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useAuth } from '@/hooks/useAuth';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -37,6 +39,7 @@ const navItems = [
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { profile, isSuperAdmin } = useAuth();
 
   return (
     <div className="flex h-full w-64 flex-col bg-slate-900 text-white">
@@ -68,15 +71,30 @@ const Sidebar = () => {
             </Link>
           );
         })}
+
+        {isSuperAdmin && (
+           <Link
+             href="/super-admin"
+             className={cn(
+               'group flex items-center rounded-md px-3 py-2 text-sm font-black uppercase tracking-widest mt-6 border border-blue-900/50 transition-colors',
+               pathname === '/super-admin'
+                 ? 'bg-blue-600 text-white'
+                 : 'text-blue-400 hover:bg-blue-900/30'
+             )}
+           >
+             <ShieldAlert className="mr-3 h-5 w-5 flex-shrink-0" />
+             Super Admin
+           </Link>
+        )}
       </nav>
       <div className="border-t border-slate-800 p-4">
         <div className="flex items-center space-x-3">
           <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-xs font-bold">JD</span>
+            <span className="text-xs font-bold">{profile?.first_name?.[0] || 'U'}{profile?.last_name?.[0] || 'S'}</span>
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="truncate text-sm font-medium text-white">John Doe</p>
-            <p className="truncate text-xs text-slate-400">Admin</p>
+            <p className="truncate text-sm font-medium text-white">{profile?.first_name} {profile?.last_name || 'User'}</p>
+            <p className="truncate text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{profile?.role?.replace('_', ' ')}</p>
           </div>
         </div>
       </div>
