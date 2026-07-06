@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2 } from 'lucide-react';
-import { customersService } from '@/lib/services';
+import { Save, X, Loader2, Trash2, User, Mail, Phone, MapPin, Globe, CreditCard, ShieldCheck, FileText, Home } from 'lucide-react';
+import { customersService } from '@/lib/services/index';
 
 function CustomerForm() {
   const router = useRouter();
@@ -18,9 +18,17 @@ function CustomerForm() {
     last_name: '',
     email: '',
     phone: '',
-    address: '',
     passport_number: '',
+    passport_expiry: '',
+    pan_number: '',
+    gst_number: '',
     nationality: '',
+    date_of_birth: '',
+    address_line1: '',
+    city: '',
+    country: '',
+    emergency_contact_name: '',
+    emergency_contact_phone: '',
   });
 
   useEffect(() => {
@@ -34,9 +42,17 @@ function CustomerForm() {
               last_name: data.last_name || '',
               email: data.email || '',
               phone: data.phone || '',
-              address: data.address || '',
               passport_number: data.passport_number || '',
+              passport_expiry: data.passport_expiry || '',
+              pan_number: data.pan_number || '',
+              gst_number: data.gst_number || '',
               nationality: data.nationality || '',
+              date_of_birth: data.date_of_birth || '',
+              address_line1: data.address_line1 || '',
+              city: data.city || '',
+              country: data.country || '',
+              emergency_contact_name: data.emergency_contact_name || '',
+              emergency_contact_phone: data.emergency_contact_phone || '',
             });
           }
         } catch (error) {
@@ -56,27 +72,13 @@ function CustomerForm() {
       if (isEditing) {
         await customersService.update(id as string, formData);
       } else {
-        await customersService.create(formData as any);
+        await customersService.create(formData);
       }
       router.push('/customers');
       router.refresh();
     } catch (error) {
       console.error('Failed to save customer:', error);
-      alert('Error saving customer. Please check console for details.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this customer?')) return;
-    setLoading(true);
-    try {
-      await customersService.delete(id as string);
-      router.push('/customers');
-      router.refresh();
-    } catch (error) {
-      console.error('Failed to delete customer:', error);
+      alert('Error saving customer profile.');
     } finally {
       setLoading(false);
     }
@@ -91,26 +93,15 @@ function CustomerForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 pb-20">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            {isEditing ? 'Edit Customer' : 'Add New Customer'}
+            {isEditing ? 'Edit Customer Profile' : 'Register New Customer'}
           </h2>
-          <p className="text-slate-500">
-            {isEditing ? 'Update customer profile information.' : 'Create a new customer profile in your database.'}
-          </p>
+          <p className="text-slate-500 font-medium">Complete CRM profile with documentation and travel details.</p>
         </div>
         <div className="flex gap-2">
-          {isEditing && (
-            <button
-              onClick={handleDelete}
-              className="inline-flex items-center rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-50 transition-colors"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </button>
-          )}
           <button
             onClick={() => router.back()}
             className="inline-flex items-center rounded-lg border bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
@@ -118,103 +109,205 @@ function CustomerForm() {
             <X className="mr-2 h-4 w-4" />
             Cancel
           </button>
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-2 text-sm font-bold text-white shadow-lg shadow-blue-100 hover:bg-blue-500 disabled:opacity-50 transition-all active:scale-95"
+          >
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+            {isEditing ? 'Update Profile' : 'Create Profile'}
+          </button>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <div className="p-6 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">First Name *</label>
-              <input
-                required
-                type="text"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter first name"
-                value={formData.first_name}
-                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-              />
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-6">
+          {/* Basic Information */}
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <User className="h-4 w-4" />
+              Identity & Contact
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">First Name *</label>
+                <input
+                  required
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.first_name}
+                  onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Last Name *</label>
+                <input
+                  required
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.last_name}
+                  onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Email Address</label>
+                <input
+                  type="email"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Phone Number</label>
+                <input
+                  type="tel"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Documentation */}
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <FileText className="h-4 w-4" />
+              Travel Documentation
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Passport Number</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.passport_number}
+                  onChange={(e) => setFormData({ ...formData, passport_number: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Passport Expiry</label>
+                <input
+                  type="date"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.passport_expiry}
+                  onChange={(e) => setFormData({ ...formData, passport_expiry: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">PAN Number (India)</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.pan_number}
+                  onChange={(e) => setFormData({ ...formData, pan_number: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">GST Number</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.gst_number}
+                  onChange={(e) => setFormData({ ...formData, gst_number: e.target.value })}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Address */}
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <Home className="h-4 w-4" />
+              Billing Address
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Last Name *</label>
+              <label className="text-sm font-medium text-slate-700">Address Line 1</label>
               <input
-                required
                 type="text"
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter last name"
-                value={formData.last_name}
-                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                value={formData.address_line1}
+                onChange={(e) => setFormData({ ...formData, address_line1: e.target.value })}
               />
             </div>
-          </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">City</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Country</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.country}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                />
+              </div>
+            </div>
+          </section>
+        </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Email Address *</label>
-            <input
-              required
-              type="email"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="customer@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Phone Number</label>
-            <input
-              type="tel"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="+1 (555) 000-0000"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Address</label>
-            <input
-              type="text"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="123 Street, City, Country"
-              value={formData.address}
-              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Passport Number</label>
-              <input
-                type="text"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="A0000000"
-                value={formData.passport_number}
-                onChange={(e) => setFormData({ ...formData, passport_number: e.target.value })}
-              />
+        <div className="space-y-6">
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-4">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <Globe className="h-4 w-4" />
+              Demographics
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700">Nationality</label>
               <input
                 type="text"
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. American"
                 value={formData.nationality}
                 onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
               />
             </div>
-          </div>
-        </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Date of Birth</label>
+              <input
+                type="date"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.date_of_birth}
+                onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
+              />
+            </div>
+          </section>
 
-        <div className="bg-slate-50 p-6 border-t flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-50 transition-colors"
-          >
-            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-            {isEditing ? 'Update Customer' : 'Save Customer'}
-          </button>
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-4">
+            <div className="flex items-center gap-2 text-red-600 font-bold text-sm uppercase tracking-wider">
+              <ShieldCheck className="h-4 w-4" />
+              Emergency Contact
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Contact Name</label>
+              <input
+                type="text"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.emergency_contact_name}
+                onChange={(e) => setFormData({ ...formData, emergency_contact_name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Contact Phone</label>
+              <input
+                type="tel"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.emergency_contact_phone}
+                onChange={(e) => setFormData({ ...formData, emergency_contact_phone: e.target.value })}
+              />
+            </div>
+          </section>
         </div>
       </form>
     </div>

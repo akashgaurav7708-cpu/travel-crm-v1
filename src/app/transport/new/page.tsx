@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2 } from 'lucide-react';
-import { transportService } from '@/lib/services';
+import { Save, X, Loader2, Trash2, Bus, Mail, Phone, User, Globe, DollarSign, Plus } from 'lucide-react';
+import { transportService } from '@/lib/services/index';
 
 function TransportForm() {
   const router = useRouter();
@@ -14,10 +14,11 @@ function TransportForm() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEditing);
   const [formData, setFormData] = useState({
-    provider: '',
-    type: 'bus',
-    contact_info: '',
-    base_price: 0,
+    name: '',
+    type: 'Road',
+    contact_person: '',
+    contact_email: '',
+    contact_phone: '',
   });
 
   useEffect(() => {
@@ -27,10 +28,11 @@ function TransportForm() {
           const data = await transportService.getById(id as string);
           if (data) {
             setFormData({
-              provider: data.provider || '',
-              type: data.type || 'bus',
-              contact_info: data.contact_info || '',
-              base_price: data.base_price || 0,
+              name: data.name || '',
+              type: data.type || 'Road',
+              contact_person: data.contact_person || '',
+              contact_email: data.contact_email || '',
+              contact_phone: data.contact_phone || '',
             });
           }
         } catch (error) {
@@ -50,26 +52,12 @@ function TransportForm() {
       if (isEditing) {
         await transportService.update(id as string, formData);
       } else {
-        await transportService.create(formData as any);
+        await transportService.create(formData);
       }
       router.push('/transport');
       router.refresh();
     } catch (error) {
       console.error('Failed to save transport:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this provider?')) return;
-    setLoading(true);
-    try {
-      await transportService.delete(id as string);
-      router.push('/transport');
-      router.refresh();
-    } catch (error) {
-      console.error('Failed to delete transport:', error);
     } finally {
       setLoading(false);
     }
@@ -84,24 +72,15 @@ function TransportForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 pb-20">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            {isEditing ? 'Edit Transport' : 'Add Transport Provider'}
+            {isEditing ? 'Edit Transport Provider' : 'Add Transport Provider'}
           </h2>
-          <p className="text-slate-500">Manage transport details and pricing.</p>
+          <p className="text-slate-500 font-medium">Manage logistics partners and fleet details.</p>
         </div>
         <div className="flex gap-2">
-          {isEditing && (
-            <button
-              onClick={handleDelete}
-              className="inline-flex items-center rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-50 transition-colors"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </button>
-          )}
           <button
             onClick={() => router.back()}
             className="inline-flex items-center rounded-lg border bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
@@ -109,71 +88,92 @@ function TransportForm() {
             <X className="mr-2 h-4 w-4" />
             Cancel
           </button>
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-2 text-sm font-bold text-white shadow-lg shadow-blue-100 hover:bg-blue-500 disabled:opacity-50 transition-all active:scale-95"
+          >
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+            {isEditing ? 'Update Provider' : 'Add Provider'}
+          </button>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <div className="p-6 space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Provider Name *</label>
-            <input
-              required
-              type="text"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. City Bus Co."
-              value={formData.provider}
-              onChange={(e) => setFormData({ ...formData, provider: e.target.value })}
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-6">
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <Bus className="h-4 w-4" />
+              Provider Details
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Company Name *</label>
+              <input
+                required
+                type="text"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g. Skyline Logistics"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Transport Category</label>
+              <select
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                value={formData.type}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              >
+                <option value="Road">Road (Bus/Car)</option>
+                <option value="Air">Air (Flights)</option>
+                <option value="Rail">Rail (Train)</option>
+                <option value="Sea">Sea (Ferry/Cruise)</option>
+              </select>
+            </div>
+          </section>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Transport Type *</label>
-            <select
-              required
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            >
-              <option value="bus">Bus</option>
-              <option value="flight">Flight</option>
-              <option value="car">Car</option>
-              <option value="train">Train</option>
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Contact Info</label>
-            <input
-              type="text"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Email or phone"
-              value={formData.contact_info}
-              onChange={(e) => setFormData({ ...formData, contact_info: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Base Price *</label>
-            <input
-              required
-              type="number"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="0.00"
-              value={formData.base_price}
-              onChange={(e) => setFormData({ ...formData, base_price: parseFloat(e.target.value) })}
-            />
-          </div>
+          <section className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+            <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
+              <User className="h-4 w-4" />
+              Contact Information
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Point of Contact</label>
+              <input
+                type="text"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.contact_person}
+                onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Email</label>
+                <input
+                  type="email"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.contact_email}
+                  onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Phone</label>
+                <input
+                  type="tel"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.contact_phone}
+                  onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                />
+              </div>
+            </div>
+          </section>
         </div>
 
-        <div className="bg-slate-50 p-6 border-t flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-50 transition-colors"
-          >
-            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-            {isEditing ? 'Update Transport' : 'Save Transport'}
-          </button>
+        <div className="space-y-6">
+           <div className="rounded-xl bg-blue-600 p-6 text-white">
+              <h4 className="text-sm font-black uppercase tracking-widest mb-2">SaaS Provider Tier</h4>
+              <p className="text-xs leading-relaxed opacity-90">This provider will be shared across your agency's sub-entities if multi-tenancy is active.</p>
+           </div>
         </div>
       </form>
     </div>

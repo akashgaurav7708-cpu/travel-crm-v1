@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, MapPin, Trash2, GripVertical, Plane, Hotel, Utensils, Camera, Coffee } from 'lucide-react';
+import { Clock, MapPin, Trash2, GripVertical, Plane, Hotel, Utensils, Camera, Coffee, LucideIcon } from 'lucide-react';
 
 interface Activity {
   id: string;
@@ -9,19 +9,16 @@ interface Activity {
   type: string;
 }
 
-const getTypeIcon = (type: string) => {
-  switch (type) {
-    case 'Transport': return Plane;
-    case 'Accommodation': return Hotel;
-    case 'Meal': return Utensils;
-    case 'Sightseeing': return Camera;
-    case 'Activity': return Coffee;
-    default: return MapPin;
-  }
+const ICON_MAP: Record<string, LucideIcon> = {
+  'Transport': Plane,
+  'Accommodation': Hotel,
+  'Meal': Utensils,
+  'Sightseeing': Camera,
+  'Activity': Coffee,
 };
 
 const ActivityCard = ({ activity }: { activity: Activity }) => {
-  const IconComponent = getTypeIcon(activity.type);
+  const Icon = ICON_MAP[activity.type] || MapPin;
 
   return (
     <div className="group relative bg-white border rounded-xl p-4 shadow-sm hover:border-blue-300 hover:shadow-md transition-all flex gap-4">
@@ -30,7 +27,7 @@ const ActivityCard = ({ activity }: { activity: Activity }) => {
       </div>
 
       <div className="flex-shrink-0 h-12 w-12 rounded-lg bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-        <IconComponent className="h-6 w-6" />
+        <Icon className="h-6 w-6" />
       </div>
 
       <div className="flex-1 space-y-1">

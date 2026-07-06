@@ -1,96 +1,89 @@
-export type LeadStatus = 'New' | 'In Progress' | 'Qualified' | 'Lost' | 'Converted';
-export type BookingStatus = 'Pending' | 'Confirmed' | 'Cancelled' | 'Completed';
-export type Priority = 'Low' | 'Medium' | 'High';
-
 export interface Lead {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  company_id: string;
+  first_name: string;
+  last_name: string;
+  email?: string;
   phone?: string;
-  status: LeadStatus;
-  source: string;
+  status: 'New' | 'Interested' | 'In Progress' | 'Qualified' | 'Lost';
+  priority: 'Low' | 'Medium' | 'High';
+  source?: string;
   destination?: string;
   budget?: number;
-  priority: Priority;
-  assignedTo?: string;
-  createdAt: string;
-  updatedAt: string;
+  travel_date?: string;
+  assigned_to?: string;
+  notes?: string;
+  created_at: string;
 }
 
 export interface Customer {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  company_id: string;
+  first_name: string;
+  last_name: string;
+  email?: string;
   phone?: string;
-  address?: string;
-  passportNumber?: string;
-  nationality?: string;
-  dateOfBirth?: string;
-  totalBookings: number;
-  totalSpent: number;
-  createdAt: string;
-  updatedAt: string;
+  passport_number?: string;
+  passport_expiry?: string;
+  pan_number?: string;
+  gst_number?: string;
+  address_line1?: string;
+  city?: string;
+  country?: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+  created_at: string;
 }
 
 export interface Hotel {
   id: string;
+  company_id: string;
   name: string;
-  location: string;
-  starRating: number;
-  contactEmail?: string;
-  contactPhone?: string;
+  star_rating: number;
+  location?: string;
+  address?: string;
+  google_maps_url?: string;
+  description?: string;
   amenities: string[];
-  basePrice: number;
+  contact_email?: string;
+  contact_phone?: string;
+  images?: string[];
+  room_types?: HotelRoomType[];
 }
 
-export interface Transport {
+export interface HotelRoomType {
   id: string;
-  type: 'Flight' | 'Train' | 'Bus' | 'Car' | 'Ferry';
-  provider: string;
-  description: string;
-  basePrice: number;
+  hotel_id: string;
+  name: string;
+  base_price: number;
+  capacity_adults: number;
+  capacity_children: number;
 }
 
 export interface TourPackage {
   id: string;
+  company_id: string;
   name: string;
-  description: string;
-  durationDays: number;
-  durationNights: number;
-  basePrice: number;
-  includedServices: string[];
-  excludedServices: string[];
+  description?: string;
+  duration_days: number;
+  duration_nights: number;
+  base_price: number;
+  destinations: string[];
+  inclusions: string[];
+  exclusions: string[];
+  images?: string[];
 }
 
 export interface Booking {
   id: string;
-  customerId: string;
-  customerName: string;
-  packageId?: string;
-  status: BookingStatus;
-  totalPrice: number;
-  startDate: string;
-  endDate: string;
-  travelersCount: number;
-  createdAt: string;
-}
-
-export interface ItineraryActivity {
-  id: string;
-  day: number;
-  time?: string;
-  title: string;
-  description: string;
-  location?: string;
-  type: 'Sightseeing' | 'Activity' | 'Meal' | 'Transport' | 'Rest';
-}
-
-export interface Itinerary {
-  id: string;
-  bookingId: string;
-  title: string;
-  activities: ItineraryActivity[];
-  createdAt: string;
+  company_id: string;
+  customer_id: string;
+  package_id?: string;
+  status: 'Pending' | 'Confirmed' | 'Cancelled' | 'Completed';
+  payment_status: 'Pending' | 'Partial' | 'Paid';
+  start_date: string;
+  end_date: string;
+  total_amount: number;
+  balance_amount: number;
+  created_at: string;
 }
