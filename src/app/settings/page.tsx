@@ -1,101 +1,173 @@
-import React from 'react';
-import { Settings, User, Bell, Shield, Database, Globe } from 'lucide-react';
+'use client';
+
+import React, { useState } from 'react';
+import {
+  Settings,
+  User,
+  Bell,
+  Shield,
+  Database,
+  Globe,
+  Smartphone,
+  Mail,
+  Palette,
+  CreditCard,
+  CheckCircle2,
+  Save,
+  Loader2
+} from 'lucide-react';
 
 export default function SettingsPage() {
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('General');
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      alert('SaaS Configuration Updated Successfully!');
+    }, 1500);
+  };
+
+  const tabs = [
+    { name: 'General', icon: Settings },
+    { name: 'Branding', icon: Palette },
+    { name: 'Communication', icon: Mail },
+    { name: 'Billing & GST', icon: CreditCard },
+    { name: 'Integrations', icon: Smartphone },
+    { name: 'Team', icon: User },
+  ];
+
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Ex-Employee v0.2 Settings</h2>
-        <p className="text-slate-500">Configure your application and agency preferences by Bilu G.</p>
+    <div className="space-y-8 max-w-6xl mx-auto pb-20">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight text-slate-900 text-white leading-tight">
+             Ex-Employee v0.2 <span className="text-blue-500">Global Settings</span>
+          </h2>
+          <p className="text-slate-500 font-bold">Configure agency identity, SaaS multitenancy, and document branding by Bilu G.</p>
+        </div>
+        <button
+          onClick={handleSave}
+          disabled={loading}
+          className="h-12 px-8 rounded-2xl bg-blue-600 text-white text-sm font-black uppercase tracking-widest shadow-xl shadow-blue-100 hover:bg-blue-500 transition-all flex items-center disabled:opacity-50"
+        >
+          {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+          Deploy Changes
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="md:col-span-1 space-y-1">
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 text-sm font-medium">
-            <Settings className="h-4 w-4" /> General
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">
-            <User className="h-4 w-4" /> Team Members
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">
-            <Bell className="h-4 w-4" /> Notifications
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">
-            <Shield className="h-4 w-4" /> Security
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">
-            <Database className="h-4 w-4" /> Data & Export
-          </button>
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Sidebar Nav */}
+        <div className="w-full lg:w-72 space-y-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.name}
+              onClick={() => setActiveTab(tab.name)}
+              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-widest transition-all ${
+                activeTab === tab.name
+                  ? 'bg-slate-900 text-white shadow-xl shadow-slate-200'
+                  : 'bg-white text-slate-400 hover:bg-slate-50 border border-transparent hover:border-slate-100'
+              }`}
+            >
+              <tab.icon className="h-5 w-5" />
+              {tab.name}
+            </button>
+          ))}
         </div>
 
-        <div className="md:col-span-3 space-y-6">
-          <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b">
-              <h3 className="font-bold text-slate-900">Agency Profile</h3>
-              <p className="text-xs text-slate-500">This information will appear on quotes and itineraries.</p>
+        {/* Content Area */}
+        <div className="flex-1 space-y-6">
+          <div className="bg-white rounded-[2rem] border shadow-sm overflow-hidden">
+            <div className="px-10 py-8 border-b">
+              <h3 className="text-xl font-black text-slate-900">{activeTab} Configuration</h3>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Manage global preferences for this tenant entity.</p>
             </div>
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Agency Name</label>
-                  <input type="text" defaultValue="Ex-Employee Agency" className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Business Email</label>
-                  <input type="email" defaultValue="hello@ex-employee.com" className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Website</label>
-                  <div className="flex">
-                    <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 bg-slate-50 text-slate-500 text-sm">https://</span>
-                    <input type="text" defaultValue="www.ex-employee.com" className="w-full rounded-r-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+
+            <div className="p-10 space-y-8">
+              {activeTab === 'General' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <InputGroup label="Agency Name" value="Ex-Employee Travel v0.2" />
+                  <InputGroup label="Entity ID" value="SaaS-TENANT-8492" disabled />
+                  <InputGroup label="Primary Domain" value="portal.ex-employee.travel" />
+                  <InputGroup label="Support Email" value="ops@ex-employee.travel" />
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Headquarters Address</label>
+                    <textarea className="w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" rows={3}>102 Innovation Drive, Silicon Valley, CA 94043</textarea>
                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Phone Number</label>
-                  <input type="tel" defaultValue="+1 (555) 123-4567" className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+              )}
+
+              {activeTab === 'Branding' && (
+                <div className="space-y-8">
+                   <div className="flex items-center gap-10">
+                      <div className="h-24 w-24 rounded-3xl bg-slate-100 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200">
+                         <Palette className="h-8 w-8 mb-1" />
+                         <span className="text-[8px] font-black uppercase">Logo</span>
+                      </div>
+                      <div className="space-y-2">
+                         <h4 className="text-sm font-black text-slate-900">Upload Agency Asset</h4>
+                         <p className="text-xs font-medium text-slate-400 leading-relaxed max-w-xs">Asset will be used on all generated PDFs, Vouchers, and Client Portals.</p>
+                         <button className="text-[10px] font-black uppercase tracking-widest text-blue-600 hover:underline">Choose File (SVG/PNG)</button>
+                      </div>
+                   </div>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <InputGroup label="Primary Brand Color" value="#2563EB" />
+                      <InputGroup label="Secondary Color" value="#0F172A" />
+                   </div>
                 </div>
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Office Address</label>
-                <textarea rows={2} defaultValue="456 Innovation Ave, Tech City, TC 98765" className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-              </div>
-            </div>
-            <div className="px-6 py-4 bg-slate-50 border-t flex justify-end">
-              <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
-                Save Changes
-              </button>
+              )}
+
+              {activeTab === 'Communication' && (
+                <div className="space-y-8">
+                   <div className="bg-blue-50/50 rounded-3xl p-6 flex gap-4 items-start">
+                      <CheckCircle2 className="h-6 w-6 text-blue-600 mt-1" />
+                      <div>
+                         <h4 className="text-sm font-black text-slate-900">SMTP Verification Success</h4>
+                         <p className="text-xs font-medium text-slate-500 mt-1">Transaction emails are being delivered via your custom SMTP server.</p>
+                      </div>
+                   </div>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <InputGroup label="SMTP Host" value="smtp.postmarkapp.com" />
+                      <InputGroup label="SMTP Port" value="587" />
+                      <InputGroup label="Sender Identity" value="Booking Team <no-reply@agency.com>" />
+                      <InputGroup label="WhatsApp Integration" value="+1 (555) 000-0000" />
+                   </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b flex items-center gap-2">
-              <Globe className="h-4 w-4 text-slate-400" />
-              <h3 className="font-bold text-slate-900">Localization</h3>
-            </div>
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Primary Currency</label>
-                  <select className="w-full rounded-lg border px-3 py-2 text-sm outline-none bg-white">
-                    <option defaultValue="USD">USD - US Dollar ($)</option>
-                    <option>EUR - Euro (€)</option>
-                    <option>GBP - British Pound (£)</option>
-                  </select>
+          <div className="bg-slate-900 rounded-[2rem] p-10 text-white flex items-center justify-between">
+             <div className="flex gap-6 items-center">
+                <div className="h-16 w-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                   <Shield className="h-8 w-8 text-blue-400" />
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Timezone</label>
-                  <select className="w-full rounded-lg border px-3 py-2 text-sm outline-none bg-white">
-                    <option defaultValue="UTC-5">(GMT-05:00) Eastern Time</option>
-                    <option>(GMT+00:00) London</option>
-                    <option>(GMT+08:00) Singapore</option>
-                  </select>
+                <div>
+                   <h4 className="text-lg font-black tracking-tight">Security & Compliance</h4>
+                   <p className="text-sm font-medium text-slate-400">All tenant data is isolated via Row Level Security (RLS).</p>
                 </div>
-              </div>
-            </div>
+             </div>
+             <button className="px-6 py-3 rounded-xl bg-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/5">
+                Audit Log Access
+             </button>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function InputGroup({ label, value, disabled = false }: any) {
+  return (
+    <div className="space-y-2">
+      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">{label}</label>
+      <input
+        disabled={disabled}
+        type="text"
+        className={`w-full rounded-2xl border border-slate-100 px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all ${disabled ? 'bg-slate-50 text-slate-400' : 'bg-slate-50/50 text-slate-900'}`}
+        defaultValue={value}
+      />
     </div>
   );
 }

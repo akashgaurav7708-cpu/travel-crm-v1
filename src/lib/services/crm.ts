@@ -1,15 +1,23 @@
-import { supabase } from './supabase';
-import { Lead, Customer, Hotel, Transport, TourPackage, Booking, Itinerary, ItineraryActivity } from '@/types/crm';
+import { createClient } from '../supabase';
+import { Lead, Customer, Hotel, Transport, TourPackage, Booking } from '@/types/crm';
+
+const supabase = createClient();
+
+// Helper to get company_id
+const getCompanyId = async () => {
+  const { data: profile } = await supabase.from('profiles').select('company_id').single();
+  return (profile as { company_id: string })?.company_id;
+};
 
 // --- Leads Service ---
 export const leadsService = {
   async getAll() {
     const { data, error } = await supabase
       .from('leads')
-      .select('*')
+      .select('*, assigned_to(first_name, last_name)')
       .order('created_at', { ascending: false });
     if (error) throw error;
-    return data;
+    return data as (Lead & { assigned_to?: { first_name: string, last_name: string } })[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
@@ -18,15 +26,16 @@ export const leadsService = {
       .eq('id', id)
       .single();
     if (error) throw error;
-    return data;
+    return data as Lead;
   },
-  async create(lead: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>) {
+  async create(lead: Partial<Lead>) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
       .from('leads')
-      .insert([lead])
+      .insert([{ ...lead, company_id }])
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Lead;
   },
   async update(id: string, lead: Partial<Lead>) {
     const { data, error } = await supabase
@@ -35,7 +44,7 @@ export const leadsService = {
       .eq('id', id)
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Lead;
   },
   async delete(id: string) {
     const { error } = await supabase
@@ -54,7 +63,7 @@ export const customersService = {
       .select('*')
       .order('last_name', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as Customer[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
@@ -63,15 +72,16 @@ export const customersService = {
       .eq('id', id)
       .single();
     if (error) throw error;
-    return data;
+    return data as Customer;
   },
-  async create(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'totalBookings' | 'totalSpent'>) {
+  async create(customer: Partial<Customer>) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
       .from('customers')
-      .insert([customer])
+      .insert([{ ...customer, company_id }])
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Customer;
   },
   async update(id: string, customer: Partial<Customer>) {
     const { data, error } = await supabase
@@ -80,7 +90,7 @@ export const customersService = {
       .eq('id', id)
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Customer;
   },
   async delete(id: string) {
     const { error } = await supabase
@@ -99,7 +109,7 @@ export const hotelsService = {
       .select('*')
       .order('name', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as Hotel[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
@@ -108,15 +118,16 @@ export const hotelsService = {
       .eq('id', id)
       .single();
     if (error) throw error;
-    return data;
+    return data as Hotel;
   },
-  async create(hotel: Omit<Hotel, 'id'>) {
+  async create(hotel: Partial<Hotel>) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
       .from('hotels')
-      .insert([hotel])
+      .insert([{ ...hotel, company_id }])
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Hotel;
   },
   async update(id: string, hotel: Partial<Hotel>) {
     const { data, error } = await supabase
@@ -125,7 +136,7 @@ export const hotelsService = {
       .eq('id', id)
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Hotel;
   },
   async delete(id: string) {
     const { error } = await supabase
@@ -140,32 +151,33 @@ export const hotelsService = {
 export const transportService = {
   async getAll() {
     const { data, error } = await supabase
-      .from('transport')
+      .from('transport_providers')
       .select('*')
-      .order('provider', { ascending: true });
+      .order('name', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as any[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
-      .from('transport')
+      .from('transport_providers')
       .select('*')
       .eq('id', id)
       .single();
     if (error) throw error;
     return data;
   },
-  async create(transport: Omit<Transport, 'id'>) {
+  async create(transport: any) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
-      .from('transport')
-      .insert([transport])
+      .from('transport_providers')
+      .insert([{ ...transport, company_id }])
       .select();
     if (error) throw error;
     return data[0];
   },
-  async update(id: string, transport: Partial<Transport>) {
+  async update(id: string, transport: any) {
     const { data, error } = await supabase
-      .from('transport')
+      .from('transport_providers')
       .update(transport)
       .eq('id', id)
       .select();
@@ -174,7 +186,7 @@ export const transportService = {
   },
   async delete(id: string) {
     const { error } = await supabase
-      .from('transport')
+      .from('transport_providers')
       .delete()
       .eq('id', id);
     if (error) throw error;
@@ -189,7 +201,7 @@ export const packagesService = {
       .select('*')
       .order('name', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as TourPackage[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
@@ -198,15 +210,16 @@ export const packagesService = {
       .eq('id', id)
       .single();
     if (error) throw error;
-    return data;
+    return data as TourPackage;
   },
-  async create(pkg: Omit<TourPackage, 'id'>) {
+  async create(pkg: Partial<TourPackage>) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
       .from('tour_packages')
-      .insert([pkg])
+      .insert([{ ...pkg, company_id }])
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as TourPackage;
   },
   async update(id: string, pkg: Partial<TourPackage>) {
     const { data, error } = await supabase
@@ -215,7 +228,7 @@ export const packagesService = {
       .eq('id', id)
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as TourPackage;
   },
   async delete(id: string) {
     const { error } = await supabase
@@ -231,10 +244,10 @@ export const bookingsService = {
   async getAll() {
     const { data, error } = await supabase
       .from('bookings')
-      .select('*, customers(first_name, last_name), tour_packages(name)')
+      .select('*, customers(first_name, last_name, email), tour_packages(name)')
       .order('created_at', { ascending: false });
     if (error) throw error;
-    return data;
+    return data as any[];
   },
   async getById(id: string) {
     const { data, error } = await supabase
@@ -245,13 +258,14 @@ export const bookingsService = {
     if (error) throw error;
     return data;
   },
-  async create(booking: Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>) {
+  async create(booking: Partial<Booking>) {
+    const company_id = await getCompanyId();
     const { data, error } = await supabase
       .from('bookings')
-      .insert([booking])
+      .insert([{ ...booking, company_id }])
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Booking;
   },
   async update(id: string, booking: Partial<Booking>) {
     const { data, error } = await supabase
@@ -260,7 +274,7 @@ export const bookingsService = {
       .eq('id', id)
       .select();
     if (error) throw error;
-    return data[0];
+    return data[0] as Booking;
   },
   async delete(id: string) {
     const { error } = await supabase
@@ -276,16 +290,16 @@ export const itineraryService = {
   async getByBooking(bookingId: string) {
     const { data, error } = await supabase
       .from('itineraries')
-      .select('*, itinerary_activities(*)')
+      .select('*, itinerary_days(*, itinerary_activities(*))')
       .eq('booking_id', bookingId)
       .single();
     if (error) {
-      if (error.code === 'PGRST116') return null; // Not found
+      if (error.code === 'PGRST116') return null;
       throw error;
     }
     return data;
   },
-  async create(itinerary: Omit<Itinerary, 'id'>) {
+  async create(itinerary: any) {
     const { data, error } = await supabase
       .from('itineraries')
       .insert([itinerary])
@@ -293,7 +307,15 @@ export const itineraryService = {
     if (error) throw error;
     return data[0];
   },
-  async addActivity(activity: Omit<ItineraryActivity, 'id'>) {
+  async addDay(day: any) {
+    const { data, error } = await supabase
+      .from('itinerary_days')
+      .insert([day])
+      .select();
+    if (error) throw error;
+    return data[0];
+  },
+  async addActivity(activity: any) {
     const { data, error } = await supabase
       .from('itinerary_activities')
       .insert([activity])
