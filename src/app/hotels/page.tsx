@@ -120,7 +120,7 @@ export default function HotelsPage() {
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Starting Rates</span>
                     <div className="flex items-baseline text-slate-900">
-                      <span className="text-lg font-black">$</span>
+                      <span className="text-lg font-black">₹</span>
                       <span className="text-2xl font-black">{(hotel as any).hotel_room_types?.[0]?.base_price || 0}</span>
                       <span className="text-xs font-bold text-slate-400 ml-1">/ night</span>
                     </div>

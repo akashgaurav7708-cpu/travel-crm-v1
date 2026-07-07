@@ -223,7 +223,7 @@ function LeadForm() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700 flex items-center">
-                    <DollarSign className="h-3 w-3 mr-1" /> Estimated Budget ($)
+                    <DollarSign className="h-3 w-3 mr-1" /> Estimated Budget (₹)
                   </label>
                   <input
                     type="number"

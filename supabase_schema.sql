@@ -27,8 +27,8 @@ CREATE TABLE companies (
     email TEXT,
     phone TEXT,
     gst_number TEXT,
-    currency TEXT DEFAULT 'USD',
-    timezone TEXT DEFAULT 'UTC',
+    currency TEXT DEFAULT 'INR', -- Default to INR for Bilu G Travels
+    timezone TEXT DEFAULT 'Asia/Kolkata',
     status TEXT DEFAULT 'active',
     plan_id UUID REFERENCES saas_plans(id),
     subscription_end_date TIMESTAMP WITH TIME ZONE,
@@ -69,7 +69,7 @@ CREATE TABLE leads (
     last_name TEXT NOT NULL,
     email TEXT,
     phone TEXT,
-    status TEXT NOT NULL DEFAULT 'New',
+    status TEXT NOT NULL DEFAULT 'New', -- New, Interested, In Progress, Qualified, Lost
     priority TEXT NOT NULL DEFAULT 'Medium',
     source TEXT,
     destination TEXT,
@@ -165,7 +165,7 @@ CREATE TABLE vehicles (
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
     provider_id UUID REFERENCES transport_providers(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
-    type TEXT,
+    type TEXT, -- Sedan, SUV, Traveller
     registration_number TEXT,
     capacity INTEGER,
     is_active BOOLEAN DEFAULT true,
@@ -235,7 +235,7 @@ CREATE TABLE itinerary_activities (
     title TEXT NOT NULL,
     description TEXT,
     location TEXT,
-    activity_type TEXT,
+    activity_type TEXT, -- Sightseeing, Transport, Meal, Hotel
     accommodation_id UUID REFERENCES accommodations(id),
     vehicle_id UUID REFERENCES vehicles(id),
     driver_id UUID REFERENCES drivers(id),
@@ -264,13 +264,27 @@ CREATE TABLE payments (
     invoice_id UUID REFERENCES invoices(id) ON DELETE SET NULL,
     amount NUMERIC(15, 2) NOT NULL,
     payment_date DATE DEFAULT CURRENT_DATE,
-    payment_method TEXT,
+    payment_method TEXT, -- Cash, Bank Transfer, Card
     transaction_id TEXT,
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 12. Documents & Media
+-- 12. Suppliers & Vendors
+CREATE TABLE suppliers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    type TEXT, -- Hotel, Transport, Activity
+    contact_person TEXT,
+    email TEXT,
+    phone TEXT,
+    address TEXT,
+    gst_number TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 13. Documents & Media
 CREATE TABLE document_repository (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
@@ -283,7 +297,7 @@ CREATE TABLE document_repository (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 13. Audit & Operations
+-- 14. Audit & Operations
 CREATE TABLE audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
@@ -303,7 +317,14 @@ RETURNS UUID AS $$
     SELECT company_id FROM profiles WHERE id = auth.uid();
 $$ LANGUAGE sql STABLE;
 
--- Multi-tenant isolation for all major tables
+-- Apply RLS to all major tables
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY profile_access ON profiles USING (company_id = get_my_company() OR role = 'super_admin');
+
+ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
+CREATE POLICY company_access ON companies USING (id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = 'super_admin');
+
+-- Multi-tenant isolation for all modules
 DO $$
 DECLARE
     t TEXT;
@@ -315,14 +336,7 @@ BEGIN
     END LOOP;
 END $$;
 
--- Enable RLS for Profiles and Companies separately
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-CREATE POLICY profile_access ON profiles USING (company_id = get_my_company() OR role = 'super_admin');
-
-ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
-CREATE POLICY company_access ON companies USING (id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = 'super_admin');
-
--- v0.2 Automated User Onboarding Trigger
+-- Triggers for v0.2 automated profile management
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
@@ -336,10 +350,10 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Seed Core Data
+-- Seed Initial Plans
 INSERT INTO saas_plans (name, price_monthly, max_users, max_leads, max_bookings)
 VALUES
 ('Free Trial', 0, 2, 50, 10),
-('Basic', 49, 5, 500, 100),
-('Professional', 149, 20, 5000, 1000),
-('Enterprise', 499, 100, 100000, 100000);
+('Basic', 4900, 5, 500, 100),
+('Professional', 14900, 20, 5000, 1000),
+('Enterprise', 49900, 100, 100000, 100000);

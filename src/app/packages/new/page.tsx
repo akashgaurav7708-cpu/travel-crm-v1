@@ -173,7 +173,7 @@ function PackageForm() {
                   />
                </div>
                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Base Price ($)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Base Price (₹)</label>
                   <div className="relative">
                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                      <input

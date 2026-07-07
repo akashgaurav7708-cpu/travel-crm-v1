@@ -62,7 +62,7 @@ export default function HouseboatsPage() {
                      <div className="pt-6 border-t flex items-center justify-between">
                         <div>
                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter mb-1">Nightly Cruise</p>
-                           <p className="text-xl font-black text-slate-900">$450</p>
+                           <p className="text-xl font-black text-slate-900">₹450</p>
                         </div>
                         <button className="h-10 px-4 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all">Manage</button>
                      </div>
