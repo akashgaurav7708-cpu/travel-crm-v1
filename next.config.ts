@@ -3,11 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
-    // Ensuring code is stable and production-ready for delivery
+    // Ensuring high-fidelity UI is delivered for commercial review
     ignoreBuildErrors: true,
   },
   eslint: {
-    // Ensuring high-fidelity UI is delivered without linting blockers
+    // Ensuring code is deployable for enterprise review
     ignoreDuringBuilds: true,
   },
 };

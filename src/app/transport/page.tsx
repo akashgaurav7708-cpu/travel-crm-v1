@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Bus, Car, Plane, Loader2, Mail, Phone, DollarSign, ExternalLink, ShieldCheck, MapPin } from 'lucide-react';
 import { fleetService } from '@/lib/services/index';
-import { Transport } from '@/types/crm';
 
 export default function TransportPage() {
   const [transports, setTransports] = useState<any[]>([]);

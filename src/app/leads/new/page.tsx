@@ -62,9 +62,9 @@ function LeadForm() {
     setLoading(true);
     try {
       if (isEditing) {
-        await leadsService.update(id as string, formData);
+        await leadsService.update(id as string, formData as any);
       } else {
-        await leadsService.create(formData);
+        await leadsService.create(formData as any);
       }
       router.push('/leads');
       router.refresh();

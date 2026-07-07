@@ -1,5 +1,5 @@
 {
-  "name": "travel-crm",
+  "name": "ex-employee-crm",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,23 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/auth-ui-react": "latest",
-    "@supabase/auth-ui-shared": "latest",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
-    "@tanstack/react-table": "^8.21.3",
     "clsx": "latest",
     "date-fns": "latest",
-    "framer-motion": "^12.42.2",
-    "html2canvas": "^1.4.1",
-    "jspdf": "^4.2.1",
-    "lucide-react": "^1.23.0",
+    "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "recharts": "^3.9.2",
     "tailwind-merge": "latest",
-    "tailwindcss": "latest"
+    "tailwindcss": "latest",
+    "@supabase/auth-ui-react": "latest",
+    "@supabase/auth-ui-shared": "latest",
+    "jspdf": "latest",
+    "html2canvas": "latest",
+    "recharts": "latest",
+    "framer-motion": "latest",
+    "@tanstack/react-table": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

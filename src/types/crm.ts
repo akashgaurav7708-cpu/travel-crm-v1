@@ -27,6 +27,8 @@ export interface Customer {
   passport_expiry?: string;
   pan_number?: string;
   gst_number?: string;
+  nationality?: string;
+  date_of_birth?: string;
   address_line1?: string;
   city?: string;
   country?: string;
@@ -84,6 +86,8 @@ export interface Booking {
   start_date: string;
   end_date: string;
   total_amount: number;
+  advance_amount: number;
   balance_amount: number;
+  travelers_count: number;
   created_at: string;
 }
