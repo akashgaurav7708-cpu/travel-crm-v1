@@ -22,7 +22,7 @@ function HotelForm() {
     description: '',
     contact_email: '',
     contact_phone: '',
-    amenities: [] as string[],
+    amenities: [] as string[], type: 'hotel' as any,
   });
 
   const [newAmenity, setNewAmenity] = useState('');
@@ -42,7 +42,7 @@ function HotelForm() {
               description: data.description || '',
               contact_email: data.contact_email || '',
               contact_phone: data.contact_phone || '',
-              amenities: data.amenities || [],
+              amenities: data.amenities || [], type: data.type || 'hotel'
             });
           }
         } catch (error) {

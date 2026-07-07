@@ -189,6 +189,10 @@ export const packagesService = {
     const { data, error } = await supabase.from('tour_packages').update(pkg).eq('id', id).select();
     if (error) throw error;
     return data[0] as TourPackage;
+  },
+  async delete(id: string) {
+    const { error } = await supabase.from('tour_packages').delete().eq('id', id);
+    if (error) throw error;
   }
 };
 
@@ -214,6 +218,10 @@ export const bookingsService = {
     const { data, error } = await supabase.from('bookings').update(booking).eq('id', id).select();
     if (error) throw error;
     return data[0] as Booking;
+  },
+  async delete(id: string) {
+    const { error } = await supabase.from('bookings').delete().eq('id', id);
+    if (error) throw error;
   }
 };
 
@@ -232,9 +240,18 @@ export const itineraryService = {
     if (error) throw error;
     return data[0];
   },
+  async addDay(day: any) {
+    const { data, error } = await supabase.from('itinerary_days').insert([day]).select();
+    if (error) throw error;
+    return data[0];
+  },
   async addActivity(activity: any) {
     const { data, error } = await supabase.from('itinerary_activities').insert([activity]).select();
     if (error) throw error;
     return data[0];
+  },
+  async removeActivity(id: string) {
+    const { error } = await supabase.from('itinerary_activities').delete().eq('id', id);
+    if (error) throw error;
   }
 };

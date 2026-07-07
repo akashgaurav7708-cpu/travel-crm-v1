@@ -107,7 +107,7 @@ CREATE TABLE customers (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Hotels & Houseboats
+-- 6. Accommodations (Hotels/Houseboats)
 CREATE TYPE accommodation_type AS ENUM ('hotel', 'houseboat', 'resort', 'villa');
 
 CREATE TABLE accommodations (
@@ -134,11 +134,11 @@ CREATE TABLE accommodation_room_types (
     base_price NUMERIC(15, 2),
     capacity_adults INTEGER,
     capacity_children INTEGER,
-    meal_plan TEXT, -- EP, CP, MAP, AP
+    meal_plan TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. Transport & Fleet
+-- 7. Fleet Management
 CREATE TABLE transport_providers (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
@@ -165,9 +165,10 @@ CREATE TABLE vehicles (
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
     provider_id UUID REFERENCES transport_providers(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
-    type TEXT, -- Sedan, SUV, Traveller
+    type TEXT,
     registration_number TEXT,
     capacity INTEGER,
+    is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -188,7 +189,7 @@ CREATE TABLE tour_packages (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 9. Bookings
+-- 9. Bookings & Reservations
 CREATE TABLE bookings (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
@@ -234,14 +235,14 @@ CREATE TABLE itinerary_activities (
     title TEXT NOT NULL,
     description TEXT,
     location TEXT,
-    activity_type TEXT, -- Sightseeing, Transport, Meal, Hotel
+    activity_type TEXT,
     accommodation_id UUID REFERENCES accommodations(id),
     vehicle_id UUID REFERENCES vehicles(id),
     driver_id UUID REFERENCES drivers(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 11. Finance
+-- 11. Financials
 CREATE TABLE invoices (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
@@ -263,28 +264,46 @@ CREATE TABLE payments (
     invoice_id UUID REFERENCES invoices(id) ON DELETE SET NULL,
     amount NUMERIC(15, 2) NOT NULL,
     payment_date DATE DEFAULT CURRENT_DATE,
-    payment_method TEXT, -- Cash, Bank Transfer, Card
+    payment_method TEXT,
     transaction_id TEXT,
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 12. Documents & Media
+CREATE TABLE document_repository (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+    customer_id UUID REFERENCES customers(id) ON DELETE SET NULL,
+    booking_id UUID REFERENCES bookings(id) ON DELETE SET NULL,
+    name TEXT NOT NULL,
+    file_url TEXT NOT NULL,
+    file_type TEXT,
+    category TEXT, -- Passport, Visa, Ticket, Voucher
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 13. Audit & Operations
+CREATE TABLE audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES profiles(id),
+    action TEXT NOT NULL,
+    module TEXT NOT NULL,
+    entity_id UUID,
+    old_data JSONB,
+    new_data JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Row Level Security (RLS) Configuration
 
--- Helper function
 CREATE OR REPLACE FUNCTION get_my_company()
 RETURNS UUID AS $$
     SELECT company_id FROM profiles WHERE id = auth.uid();
 $$ LANGUAGE sql STABLE;
 
--- Apply RLS to all major tables
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-CREATE POLICY profile_access ON profiles USING (company_id = get_my_company() OR role = 'super_admin');
-
-ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
-CREATE POLICY company_access ON companies USING (id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = 'super_admin');
-
--- Multi-tenant isolation for all modules
+-- Multi-tenant isolation for all major tables
 DO $$
 DECLARE
     t TEXT;
@@ -296,7 +315,14 @@ BEGIN
     END LOOP;
 END $$;
 
--- Triggers for v0.2 automated profile management
+-- Enable RLS for Profiles and Companies separately
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY profile_access ON profiles USING (company_id = get_my_company() OR role = 'super_admin');
+
+ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
+CREATE POLICY company_access ON companies USING (id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = 'super_admin');
+
+-- v0.2 Automated User Onboarding Trigger
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
@@ -310,7 +336,7 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Seed Initial Plans
+-- Seed Core Data
 INSERT INTO saas_plans (name, price_monthly, max_users, max_leads, max_bookings)
 VALUES
 ('Free Trial', 0, 2, 50, 10),
