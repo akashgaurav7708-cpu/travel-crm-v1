@@ -275,3 +275,29 @@ VALUES
 ('Basic', 49, 5, 500, 100),
 ('Professional', 149, 20, 5000, 1000),
 ('Enterprise', 499, 100, 100000, 100000);
+
+-- Function to handle new user signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+DECLARE
+    is_first_user BOOLEAN;
+BEGIN
+    -- Check if this is the first user in the system
+    SELECT NOT EXISTS (SELECT 1 FROM public.profiles) INTO is_first_user;
+
+    IF is_first_user THEN
+        INSERT INTO public.profiles (id, first_name, last_name, role, is_active)
+        VALUES (new.id, 'Super', 'Admin', 'super_admin', true);
+    ELSE
+        INSERT INTO public.profiles (id, first_name, last_name, role, is_active)
+        VALUES (new.id, '', '', 'sales_executive', true);
+    END IF;
+
+    RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to call the function on signup
+CREATE OR REPLACE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();

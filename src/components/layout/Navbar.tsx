@@ -4,10 +4,12 @@ import React from 'react';
 import { Bell, Search, User, LogOut } from 'lucide-react';
 import { createClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 
 const Navbar = () => {
   const supabase = createClient();
   const router = useRouter();
+  const { profile } = useAuth();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -33,8 +35,8 @@ const Navbar = () => {
         <div className="h-8 w-px bg-slate-100"></div>
         <div className="flex items-center gap-4">
            <div className="text-right hidden sm:block">
-              <p className="text-sm font-black text-slate-900 leading-none">Ex-Employee User</p>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Super Admin</p>
+              <p className="text-sm font-black text-slate-900 leading-none">{profile?.first_name} {profile?.last_name || 'Ex-Employee User'}</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{profile?.role?.replace('_', ' ')}</p>
            </div>
            <button
              onClick={handleSignOut}
