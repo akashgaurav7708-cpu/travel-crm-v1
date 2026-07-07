@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Save, X, Loader2, Trash2, Bus, Mail, Phone, User, Globe, DollarSign, Plus } from 'lucide-react';
-import { transportService } from '@/lib/services/index';
+import { fleetService } from '@/lib/services/index';
 
 function TransportForm() {
   const router = useRouter();
@@ -25,7 +25,7 @@ function TransportForm() {
     if (id) {
       async function fetchTransport() {
         try {
-          const data = await transportService.getById(id as string);
+          const data = await fleetService.getById(id as string);
           if (data) {
             setFormData({
               name: data.name || '',
@@ -50,9 +50,9 @@ function TransportForm() {
     setLoading(true);
     try {
       if (isEditing) {
-        await transportService.update(id as string, formData);
+        await fleetService.update(id as string, formData);
       } else {
-        await transportService.create(formData);
+        await fleetService.create(formData);
       }
       router.push('/transport');
       router.refresh();
