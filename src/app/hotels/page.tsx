@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Star, MapPin, Building2, Loader2, DollarSign, Image as ImageIcon, ExternalLink, Settings } from 'lucide-react';
-import { hotelsService } from '@/lib/services/index';
+import { accommodationsService } from '@/lib/services/index';
 import { Hotel } from '@/types/crm';
 
 export default function HotelsPage() {
@@ -14,7 +14,7 @@ export default function HotelsPage() {
   useEffect(() => {
     async function fetchHotels() {
       try {
-        const data = await hotelsService.getAll();
+        const data = await accommodationsService.getAll();
         setHotels(data as any);
       } catch (err) {
         console.error(err);

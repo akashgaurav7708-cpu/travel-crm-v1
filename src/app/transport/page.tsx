@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Bus, Car, Plane, Loader2, Mail, Phone, DollarSign, ExternalLink, ShieldCheck, MapPin } from 'lucide-react';
-import { transportService } from '@/lib/services/index';
+import { fleetService } from '@/lib/services/index';
 import { Transport } from '@/types/crm';
 
 export default function TransportPage() {
@@ -14,7 +14,7 @@ export default function TransportPage() {
   useEffect(() => {
     async function loadTransport() {
       try {
-        const data = await transportService.getAll();
+        const data = await fleetService.getAll();
         setTransports(data as any);
       } catch (error) {
         console.error('Failed to load transport:', error);

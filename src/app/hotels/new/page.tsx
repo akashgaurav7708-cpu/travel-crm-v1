@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Save, X, Loader2, Trash2, Building2, MapPin, Star, Mail, Phone, Globe, DollarSign, Image as ImageIcon, Plus, ShieldCheck } from 'lucide-react';
-import { hotelsService } from '@/lib/services/index';
+import { accommodationsService } from '@/lib/services/index';
 
 function HotelForm() {
   const router = useRouter();
@@ -31,7 +31,7 @@ function HotelForm() {
     if (id) {
       async function fetchHotel() {
         try {
-          const data = await hotelsService.getById(id as string);
+          const data = await accommodationsService.getById(id as string);
           if (data) {
             setFormData({
               name: data.name || '',
@@ -60,9 +60,9 @@ function HotelForm() {
     setLoading(true);
     try {
       if (isEditing) {
-        await hotelsService.update(id as string, formData);
+        await accommodationsService.update(id as string, formData);
       } else {
-        await hotelsService.create(formData);
+        await accommodationsService.create(formData);
       }
       router.push('/hotels');
       router.refresh();
@@ -78,7 +78,7 @@ function HotelForm() {
     if (!confirm('Are you sure you want to delete this hotel?')) return;
     setLoading(true);
     try {
-      await hotelsService.delete(id as string);
+      await accommodationsService.delete(id as string);
       router.push('/hotels');
       router.refresh();
     } catch (error) {

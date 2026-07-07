@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Bell, Search, User, LogOut } from 'lucide-react';
+import { Bell, Search, User, LogOut, MessageSquare, Mail } from 'lucide-react';
 import { createClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -28,10 +28,15 @@ const Navbar = () => {
         />
       </div>
       <div className="flex items-center space-x-6">
-        <button className="relative rounded-xl p-2.5 text-slate-400 hover:bg-slate-50 hover:text-blue-600 transition-all">
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
-        </button>
+        <div className="flex items-center gap-2">
+           <button className="p-2.5 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-green-600 transition-all relative">
+              <MessageSquare className="h-5 w-5" />
+           </button>
+           <button className="p-2.5 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-blue-600 transition-all relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
+           </button>
+        </div>
         <div className="h-8 w-px bg-slate-100"></div>
         <div className="flex items-center gap-4">
            <div className="text-right hidden sm:block">
