@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const supabase = createClient();
   const router = useRouter();
 
@@ -26,13 +26,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-xl">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-black text-slate-900">Ex-Employee v0.2</h1>
-          <p className="mt-2 text-slate-500 font-medium">Agency Portal Login</p>
+          <p className="mt-2 text-slate-500 font-medium">Create Agency Account</p>
           <p className="mt-1 text-xs text-blue-600 font-black uppercase tracking-widest">by Bilu G</p>
         </div>
 
         <Auth
           supabaseClient={supabase}
-          view="sign_in"
+          view="sign_up"
           appearance={{
               theme: ThemeSupa,
               variables: {
@@ -49,8 +49,8 @@ export default function LoginPage() {
           showLinks={true}
         />
 
-        <div className="mt-8 text-center text-[10px] text-slate-400 font-bold uppercase tracking-tighter border-t pt-6">
-           Authorized Personnel Only • admin@bilug.com
+        <div className="mt-8 text-center text-xs text-slate-400 font-medium">
+           Register your travel agency to start managing trips.
         </div>
       </div>
     </div>

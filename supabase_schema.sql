@@ -301,3 +301,13 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Provision Initial Super Admin (if not exists)
+-- This assumes auth.users already has the user, which we can't do via SQL for auth schema directly in some environments,
+-- but we can ensure the profile exists and is correctly typed.
+DO $$
+BEGIN
+    -- This block is for documentation/initialization reference.
+    -- In a live environment, the user would be created via auth.signUp()
+    -- and the handle_new_user() trigger would handle the profile.
+END $$;

@@ -36,14 +36,19 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Redirect authenticated users from /login to /
-  if (user && request.nextUrl.pathname.startsWith('/login')) {
+  // URL checking
+  const isLoginPage = request.nextUrl.pathname.startsWith('/login');
+  const isSignUpPage = request.nextUrl.pathname.startsWith('/signup');
+  const isAuthPage = isLoginPage || isSignUpPage;
+
+  // Redirect authenticated users from login/signup to Dashboard
+  if (user && isAuthPage) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Protect all routes except auth-related ones
-  if (!user && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/auth')) {
-    // Development fallback
+  // Protect CRM routes: if not logged in and not on auth page, redirect to login
+  if (!user && !isAuthPage) {
+    // Development fallback if env vars missing
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('your-project')) {
         return response;
     }
@@ -68,6 +73,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|login|auth).*)',
+    '/((?!_next/static|_next/image|favicon.ico|auth).*)',
   ],
 };
