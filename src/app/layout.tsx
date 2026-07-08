@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +13,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ex-Employee v0.2 by Bilu G",
-  description: "Ex-Employee v0.2 by Bilu G - Advanced Solution",
+  title: {
+    default: "Bilu G Travels Kashmir | Trusted Local Kashmir DMC",
+    template: "%s | Bilu G Travels Kashmir"
+  },
+  description: "Experience the luxury of Kashmir with Bilu G Travels. Your trusted local Kashmir DMC for premium tour packages, offbeat valleys, luxury houseboats, and authentic experiences.",
+  keywords: ["Kashmir Tour Packages", "Kashmir DMC", "Bilu G Travels", "Luxury Kashmir Tours", "Offbeat Kashmir", "Srinagar Houseboats", "Gulmarg Packages"],
+  authors: [{ name: "Bilu G Travels" }],
+  creator: "Bilu G Travels",
+  publisher: "Bilu G Travels",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Bilu G Travels Kashmir | Trusted Local Kashmir DMC",
+    description: "Your gateway to the paradise on earth. Luxury and authentic Kashmir tours.",
+    url: "https://bilugtravelskashmir.com",
+    siteName: "Bilu G Travels Kashmir",
+    locale: "en_IN",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -26,9 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <DashboardLayout>
-          {children}
-        </DashboardLayout>
+        {children}
       </body>
     </html>
   );

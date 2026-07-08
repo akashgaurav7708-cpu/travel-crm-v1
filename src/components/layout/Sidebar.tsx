@@ -74,7 +74,7 @@ const Sidebar = () => {
     {
       title: 'Analytics',
       items: [
-        { name: 'Executive Dashboard', href: '/', icon: LayoutDashboard },
+        { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Reports & P&L', href: '/reports', icon: BarChart3 },
       ]
     },
