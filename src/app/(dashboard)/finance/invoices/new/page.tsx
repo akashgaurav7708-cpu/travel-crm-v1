@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, DollarSign, Calculator, FileText, ArrowLeft } from 'lucide-react';
+import { Save, Loader2, Calculator, FileText, ArrowLeft, IndianRupee } from 'lucide-react';
 import { financeService, bookingsService } from '@/lib/services/index';
 import Link from 'next/link';
 
@@ -38,6 +38,7 @@ function InvoiceForm() {
                 const gst = sub * 0.05;
                 setFormData(prev => ({
                    ...prev,
+                   booking_id: bookingId,
                    subtotal: sub,
                    gst_amount: gst,
                    total_amount: sub + gst
@@ -60,8 +61,9 @@ function InvoiceForm() {
       await financeService.createInvoice(formData);
       router.push('/finance/invoices');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(`Error creating invoice: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -89,7 +91,13 @@ function InvoiceForm() {
                   </div>
                   <div className="space-y-2">
                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Select Booking *</label>
-                     <select required className="w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 bg-white" value={formData.booking_id} onChange={e => setFormData({...formData, booking_id: e.target.value})}>
+                     <select required className="w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 bg-white" value={formData.booking_id} onChange={e => {
+                        const bId = e.target.value;
+                        const b = bookings.find(x => x.id === bId);
+                        const sub = Number(b?.total_amount) || 0;
+                        const gst = sub * 0.05;
+                        setFormData({...formData, booking_id: bId, subtotal: sub, gst_amount: gst, total_amount: sub + gst});
+                     }}>
                         <option value="">-- Choose Active Reservation --</option>
                         {bookings.map(b => (
                            <option key={b.id} value={b.id}>#{b.id.slice(0,8)} - {b.customers?.first_name} {b.customers?.last_name}</option>

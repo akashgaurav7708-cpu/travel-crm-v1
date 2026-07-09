@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2, Calendar, User, Package, CreditCard, Clock, Info, ShieldCheck, MapPin, DollarSign, Calculator } from 'lucide-react';
+import { Save, X, Loader2, Trash2, Calendar, User, Package, CreditCard, Clock, Info, ShieldCheck, MapPin, Calculator, IndianRupee } from 'lucide-react';
 import { bookingsService, customersService, packagesService } from '@/lib/services/index';
 import { Customer, TourPackage } from '@/types/crm';
 import { format, addDays } from 'date-fns';
@@ -26,6 +26,7 @@ function BookingForm() {
     start_date: format(new Date(), 'yyyy-MM-dd'),
     end_date: format(addDays(new Date(), 7), 'yyyy-MM-dd'),
     total_amount: 0,
+    advance_amount: 0,
     balance_amount: 0,
     travelers_count: 1,
   });
@@ -51,6 +52,7 @@ function BookingForm() {
               start_date: booking.start_date || '',
               end_date: booking.end_date || '',
               total_amount: Number(booking.total_amount) || 0,
+              advance_amount: Number(booking.advance_amount) || 0,
               balance_amount: Number(booking.balance_amount) || 0,
               travelers_count: booking.travelers_count || 1,
             });
@@ -65,6 +67,11 @@ function BookingForm() {
     loadData();
   }, [id]);
 
+  useEffect(() => {
+    const balance = formData.total_amount - formData.advance_amount;
+    setFormData(prev => ({ ...prev, balance_amount: balance }));
+  }, [formData.total_amount, formData.advance_amount]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -76,9 +83,9 @@ function BookingForm() {
       }
       router.push('/bookings');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save booking:', error);
-      alert('Error saving reservation.');
+      alert(`Error saving reservation: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -102,7 +109,7 @@ function BookingForm() {
     const pkg = packages.find(p => p.id === pkgId);
     if (pkg) {
       const total = pkg.base_price * count;
-      setFormData(prev => ({ ...prev, total_amount: total, balance_amount: total }));
+      setFormData(prev => ({ ...prev, total_amount: total }));
     }
   };
 
@@ -241,27 +248,42 @@ function BookingForm() {
               <Calculator className="h-4 w-4" />
               Trip Costing & Payments
             </div>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Total Quotation Amount ($) *</label>
+                <label className="text-sm font-medium text-slate-700">Total Quotation (₹) *</label>
                 <div className="relative">
-                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                   <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                    <input
                     type="number"
                     required
                     className="w-full rounded-lg border border-slate-200 pl-10 pr-3 py-3 text-lg font-black outline-none focus:ring-2 focus:ring-blue-500"
                     value={formData.total_amount}
                     onChange={(e) => {
-                       const total = parseFloat(e.target.value);
-                       setFormData({ ...formData, total_amount: total, balance_amount: total });
+                       const total = parseFloat(e.target.value) || 0;
+                       setFormData({ ...formData, total_amount: total });
                     }}
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Balance Due ($)</label>
+                <label className="text-sm font-medium text-slate-700">Advance Paid (₹)</label>
                 <div className="relative">
-                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                   <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                   <input
+                    type="number"
+                    className="w-full rounded-lg border border-slate-200 pl-10 pr-3 py-3 text-lg font-black outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.advance_amount}
+                    onChange={(e) => {
+                       const adv = parseFloat(e.target.value) || 0;
+                       setFormData({ ...formData, advance_amount: adv });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Balance Due (₹)</label>
+                <div className="relative">
+                   <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                    <input
                     disabled
                     type="number"

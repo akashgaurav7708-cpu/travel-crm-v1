@@ -84,8 +84,8 @@ export default function Dashboard() {
 
       {/* Primary KPI Metrics */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <MetricCard title="Today's Revenue" value={`$${stats.todayRevenue.toLocaleString()}`} trend="+12.4%" color="blue" icon={<DollarSign />} />
-        <MetricCard title="Total Platform Rev" value={`$${stats.monthlyRevenue.toLocaleString()}`} trend="+8.1%" color="green" icon={<TrendingUp />} />
+        <MetricCard title="Today's Revenue" value={`₹${stats.todayRevenue.toLocaleString()}`} trend="+12.4%" color="blue" icon={<DollarSign />} />
+        <MetricCard title="Total Platform Rev" value={`₹${stats.monthlyRevenue.toLocaleString()}`} trend="+8.1%" color="green" icon={<TrendingUp />} />
         <MetricCard title="Active Reservations" value={stats.activeBookings.toString()} trend="+2.4%" color="purple" icon={<Briefcase />} />
         <MetricCard title="Awaiting Payment" value={stats.pendingPayments.toString()} trend="-1.5%" color="orange" icon={<CreditCard />} />
       </div>
@@ -160,7 +160,7 @@ export default function Dashboard() {
                <div className="absolute top-0 right-0 p-8 opacity-10"><Sparkles className="h-32 w-32" /></div>
                <h3 className="text-xl font-black mb-6 flex items-center">AI Insights <Sparkles className="h-4 w-4 ml-2 text-blue-400" /></h3>
                <div className="space-y-6">
-                  <InsightItem title="Upsell Opportunity" desc="Recommend private houseboat for Wilson Group for $120 markup." />
+                  <InsightItem title="Upsell Opportunity" desc="Recommend private houseboat for Wilson Group for ₹120 markup." />
                   <InsightItem title="Inventory Alert" desc="Gulmarg Grand is 98% booked for peak season (Dec 15-25)." />
                   <InsightItem title="Revenue Pulse" desc="Conversion rate is up 4.2% since implementing AI Costing." />
                </div>

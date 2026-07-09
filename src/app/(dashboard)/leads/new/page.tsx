@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2, Calendar, DollarSign, MapPin, User, Mail, Phone, Info } from 'lucide-react';
+import { Save, X, Loader2, Trash2, Calendar, IndianRupee, MapPin, User, Mail, Phone, Info } from 'lucide-react';
 import { leadsService } from '@/lib/services/index';
 
 function LeadForm() {
@@ -68,9 +68,9 @@ function LeadForm() {
       }
       router.push('/leads');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save lead:', error);
-      alert('Error saving lead. Please try again.');
+      alert(`Error saving lead: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -223,7 +223,7 @@ function LeadForm() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700 flex items-center">
-                    <DollarSign className="h-3 w-3 mr-1" /> Estimated Budget ($)
+                    <IndianRupee className="h-3 w-3 mr-1" /> Estimated Budget (₹)
                   </label>
                   <input
                     type="number"

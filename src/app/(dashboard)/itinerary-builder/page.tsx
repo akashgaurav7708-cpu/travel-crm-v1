@@ -3,9 +3,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
-  Plus, MapPin, Clock, Utensils, Camera, Hotel, Bus, Save, Loader2, Trash2, Calendar, Sparkles, ChevronRight, Share2, Download, Copy, History, CloudSun, Backpack, Map as MapIcon, CheckCircle2
+  Bus, Hotel, Utensils, Camera, Save, Loader2, Calendar, Sparkles, ChevronRight, Share2, Download, CheckCircle2, Clock, MapPin, Mail, MessageSquare
 } from 'lucide-react';
-import { format } from 'date-fns';
 import { itineraryService, bookingsService } from '@/lib/services/index';
 import { aiService } from '@/lib/ai/engine';
 import { pdfGenerator } from '@/lib/pdf/generator';
@@ -63,7 +62,6 @@ function ItineraryBuilderContent() {
           days: 7
        };
        const result = await aiService.generateItinerary(prompt);
-       // In v0.2 we just simulate the state update for UI responsiveness
        alert(`AI Assistant: Successfully designed "${result.title}"`);
     } catch (err) {
        console.error(err);
@@ -74,6 +72,19 @@ function ItineraryBuilderContent() {
 
   const handleDownloadPdf = async () => {
      await pdfGenerator.generateDocument('itinerary-workspace', `Itinerary_${bookingId?.substring(0,8)}`);
+  };
+
+  const shareOnWhatsApp = () => {
+    if (!booking) return;
+    const message = `Hi ${booking.customers?.first_name}, here is your itinerary for ${booking.tour_packages?.name || 'Kashmir'}. You can view it here: ${window.location.href}`;
+    window.open(`https://wa.me/${booking.customers?.phone?.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const sendEmail = () => {
+    if (!booking) return;
+    const subject = `Your Itinerary: ${booking.tour_packages?.name || 'Kashmir'}`;
+    const body = `Hi ${booking.customers?.first_name},\n\nPlease find your trip itinerary below:\n\n${window.location.href}`;
+    window.location.href = `mailto:${booking.customers?.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   if (loading) {
@@ -101,7 +112,6 @@ function ItineraryBuilderContent() {
 
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col gap-6">
-      {/* Workspace Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
            <h2 className="text-3xl font-black tracking-tight text-slate-900">
@@ -114,8 +124,11 @@ function ItineraryBuilderContent() {
            </p>
         </div>
         <div className="flex gap-2">
-          <button className="rounded-xl border bg-white px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 transition-all flex items-center shadow-sm">
-             <Share2 className="mr-2 h-4 w-4" /> Share
+          <button onClick={shareOnWhatsApp} className="rounded-xl border bg-white px-5 py-2.5 text-xs font-black uppercase tracking-widest text-green-600 hover:bg-green-50 transition-all flex items-center shadow-sm">
+             <MessageSquare className="mr-2 h-4 w-4" /> WhatsApp
+          </button>
+          <button onClick={sendEmail} className="rounded-xl border bg-white px-5 py-2.5 text-xs font-black uppercase tracking-widest text-blue-600 hover:bg-blue-50 transition-all flex items-center shadow-sm">
+             <Mail className="mr-2 h-4 w-4" /> Email
           </button>
           <button onClick={handleDownloadPdf} className="rounded-xl border bg-white px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 transition-all flex items-center shadow-sm">
              <Download className="mr-2 h-4 w-4" /> Export PDF
@@ -128,7 +141,6 @@ function ItineraryBuilderContent() {
       </div>
 
       <div className="flex-1 flex gap-6 overflow-hidden">
-        {/* Navigation */}
         <div className="w-20 flex flex-col gap-3 py-2">
            {[1, 2, 3, 4, 5, 6, 7].map(d => (
               <button key={d} onClick={() => setActiveDay(d)} className={`w-full aspect-square rounded-2xl flex flex-col items-center justify-center transition-all ${activeDay === d ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 scale-105' : 'bg-white text-slate-400 hover:bg-slate-50 border shadow-sm'}`}>
@@ -138,19 +150,13 @@ function ItineraryBuilderContent() {
            ))}
         </div>
 
-        {/* Workspace Canvas */}
         <div id="itinerary-workspace" className="flex-1 bg-white rounded-[2rem] border shadow-xl shadow-slate-100 flex flex-col overflow-hidden">
-           <div className="px-10 py-8 border-b flex items-center justify-between">
+           <div className="px-10 py-8 border-b flex items-center justify-between text-slate-900">
               <div className="flex items-center gap-4">
-                 <h3 className="text-2xl font-black text-slate-900">Day {activeDay}: City Arrival & Discovery</h3>
+                 <h3 className="text-2xl font-black">Day {activeDay}: City Arrival & Discovery</h3>
                  <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-black uppercase tracking-tighter flex items-center border border-green-100">
                     <CheckCircle2 className="h-3 w-3 mr-1" /> All Reservations Confirmed
                  </span>
-              </div>
-              <div className="flex items-center gap-8">
-                 <div className="flex items-center gap-2 text-slate-400">
-                    <CloudSun className="h-5 w-5" /> <span className="text-xs font-bold uppercase tracking-widest">24°C Sunny</span>
-                 </div>
               </div>
            </div>
 
@@ -158,18 +164,8 @@ function ItineraryBuilderContent() {
               <div className="relative pl-12 space-y-10">
                  <div className="absolute left-[23px] top-4 bottom-4 w-1 bg-slate-100 rounded-full"></div>
                  <ActivityItem time="09:00 AM" title="Airport Pick-up & Transfer" type="transport" location="Terminal 3 Gate 4" desc="Luxury private vehicle with English speaking driver." />
-                 <ActivityItem time="01:30 PM" title="Seafood Experience" type="meal" location="The Marina Wharf" desc="Curated tasting menu with ocean views." />
+                 <ActivityItem time="01:30 PM" title="Welcome Lunch" type="meal" location="Kashmiri Wazwan Specialist" desc="Authentic local cuisine experience." />
               </div>
-           </div>
-        </div>
-
-        {/* Sidebar Tools */}
-        <div className="w-80 space-y-6 overflow-y-auto pr-2">
-           <div className="bg-slate-900 rounded-[2rem] p-8 text-white shadow-2xl shadow-blue-100 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-10"><Sparkles className="h-32 w-32" /></div>
-              <p className="text-xs font-black uppercase tracking-widest text-blue-400 mb-4 flex items-center"><Sparkles className="h-3 w-3 mr-2" /> AI Assistant</p>
-              <p className="text-sm font-medium leading-relaxed opacity-80 italic">"I recommend shifting the boat ride to 4:00 PM for the best sunset lighting."</p>
-              <button className="w-full mt-8 py-3 rounded-xl bg-blue-600 text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 transition-all">Apply Recommendation</button>
            </div>
         </div>
       </div>

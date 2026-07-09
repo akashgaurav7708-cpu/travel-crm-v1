@@ -70,7 +70,7 @@ export default function SuperAdminDashboard() {
         {/* Global Network Stats */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
            <StatCard title="Active Tenants" value="124" trend="+8.2%" icon={<Building2 />} />
-           <StatCard title="SaaS Revenue" value="$42,850" trend="+12.4%" icon={<TrendingUp />} />
+           <StatCard title="SaaS Revenue" value="₹42,850" trend="+12.4%" icon={<TrendingUp />} />
            <StatCard title="Network Load" value="24.8%" trend="Healthy" icon={<Activity />} />
            <StatCard title="System Health" value="99.9%" trend="Stable" icon={<ShieldCheck />} />
         </div>
