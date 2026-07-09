@@ -402,13 +402,7 @@ function OffbeatCard({ name, price, image, onExplore }: any) {
   );
 }
 
-interface ReviewCardProps {
-  name: string;
-  text: string;
-  image: string;
-}
-
-function ReviewCard({ name, text, image }: ReviewCardProps) {
+function ReviewCard({ name, text, image }: any) {
   return (
     <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 hover:shadow-xl transition-all">
       <div className="flex items-center gap-1 text-brand-gold mb-4">
@@ -425,12 +419,7 @@ function ReviewCard({ name, text, image }: ReviewCardProps) {
   );
 }
 
-interface FAQItemProps {
-  question: string;
-  answer: string;
-}
-
-function FAQItem({ question, answer }: FAQItemProps) {
+function FAQItem({ question, answer }: any) {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
     <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">

@@ -86,10 +86,10 @@ export default function ReportsPage() {
 
       {/* Metric Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <ReportCard title="Total Network Revenue" value={`$${reportData.revenue.toLocaleString()}`} change={reportData.growth} trend="up" />
-        <ReportCard title="Average Transaction" value={`$${reportData.avgBooking.toLocaleString(undefined, {maximumFractionDigits: 0})}`} change="+5.2%" trend="up" />
+        <ReportCard title="Total Network Revenue" value={`₹${reportData.revenue.toLocaleString()}`} change={reportData.growth} trend="up" />
+        <ReportCard title="Gross Profit (Est.)" value={`₹${(reportData.revenue * 0.15).toLocaleString(undefined, {maximumFractionDigits: 0})}`} change="+4.2%" trend="up" />
         <ReportCard title="Total Reservations" value={reportData.bookingsCount.toString()} change="+8.1%" trend="up" />
-        <ReportCard title="Outstanding Balances" value="$12,450" change="-1.4%" trend="down" />
+        <ReportCard title="Outstanding Balances" value="₹12,450" change="-1.4%" trend="down" />
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

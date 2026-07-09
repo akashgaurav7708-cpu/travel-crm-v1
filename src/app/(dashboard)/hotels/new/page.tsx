@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2, Building2, MapPin, Star, Mail, Phone, Globe, DollarSign, Image as ImageIcon, Plus, ShieldCheck } from 'lucide-react';
-import { accommodationsService } from '@/lib/services/index';
+import { Save, X, Loader2, Trash2, Building2, MapPin, Star, Mail, Phone, Globe, Image as ImageIcon, Plus, ShieldCheck, FileText } from 'lucide-react';
+import { accommodationsService, storageService } from '@/lib/services/index';
 
 function HotelForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const isEditing = !!id;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEditing);
@@ -22,10 +23,13 @@ function HotelForm() {
     description: '',
     contact_email: '',
     contact_phone: '',
-    amenities: [] as string[], type: 'hotel' as any,
+    amenities: [] as string[],
+    type: 'hotel' as any,
+    images: [] as string[],
   });
 
   const [newAmenity, setNewAmenity] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -42,7 +46,9 @@ function HotelForm() {
               description: data.description || '',
               contact_email: data.contact_email || '',
               contact_phone: data.contact_phone || '',
-              amenities: data.amenities || [], type: data.type || 'hotel'
+              amenities: data.amenities || [],
+              type: data.type || 'hotel',
+              images: data.images || [],
             });
           }
         } catch (error) {
@@ -55,6 +61,24 @@ function HotelForm() {
     }
   }, [id]);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const path = `hotels/${Date.now()}-${file.name}`;
+      await storageService.uploadFile('media', path, file);
+      const url = await storageService.getPublicUrl('media', path);
+      setFormData(prev => ({ ...prev, images: [...prev.images, url] }));
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -66,9 +90,9 @@ function HotelForm() {
       }
       router.push('/hotels');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save hotel:', error);
-      alert('Error saving hotel details.');
+      alert(`Error saving hotel: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -147,16 +171,31 @@ function HotelForm() {
               <Building2 className="h-4 w-4" />
               General Information
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Hotel Name *</label>
-              <input
-                required
-                type="text"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. Grand Plaza Resort"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
+            <div className="grid grid-cols-2 gap-4">
+               <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Hotel Name *</label>
+                  <input
+                    required
+                    type="text"
+                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. Grand Plaza Resort"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  />
+               </div>
+               <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Type</label>
+                  <select
+                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    value={formData.type}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                  >
+                    <option value="hotel">Hotel</option>
+                    <option value="houseboat">Houseboat</option>
+                    <option value="resort">Resort</option>
+                    <option value="villa">Villa</option>
+                  </select>
+               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -222,6 +261,24 @@ function HotelForm() {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
+            </div>
+            <div className="space-y-4">
+               <label className="text-sm font-medium text-slate-700">Hotel Images</label>
+               <div className="grid grid-cols-4 gap-4">
+                  {formData.images.map((url, i) => (
+                     <div key={i} className="relative aspect-square rounded-lg overflow-hidden border">
+                        <img src={url} alt="Hotel" className="w-full h-full object-cover" />
+                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, idx) => idx !== i) }))} className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600">
+                           <X className="h-3 w-3" />
+                        </button>
+                     </div>
+                  ))}
+                  <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="aspect-square rounded-lg border-2 border-dashed flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 transition-all">
+                     {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Plus className="h-6 w-6" />}
+                     <span className="text-[10px] font-bold mt-1">Add Image</span>
+                  </button>
+                  <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+               </div>
             </div>
           </section>
         </div>
@@ -294,8 +351,6 @@ function HotelForm() {
     </div>
   );
 }
-
-import { FileText } from 'lucide-react';
 
 export default function NewHotelPage() {
   return (

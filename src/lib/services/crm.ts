@@ -3,10 +3,12 @@ import { Lead, Customer, Hotel, TourPackage, Booking } from '@/types/crm';
 
 const supabase = createClient();
 
-// Helper to get company_id
-const getCompanyId = async () => {
-  const { data: profile } = await supabase.from('profiles').select('company_id').single();
-  return (profile as { company_id: string })?.company_id;
+// Helper to get current profile including company_id and role
+const getMyProfile = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+  return profile;
 };
 
 // --- Leads Service ---
@@ -25,8 +27,12 @@ export const leadsService = {
     return data as Lead;
   },
   async create(lead: Partial<Lead>) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('leads').insert([{ ...lead, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('leads').insert([{
+      ...lead,
+      company_id: profile?.company_id,
+      assigned_to: lead.assigned_to || profile?.id
+    }]).select();
     if (error) throw error;
     return data[0] as Lead;
   },
@@ -54,8 +60,8 @@ export const customersService = {
     return data as Customer;
   },
   async create(customer: Partial<Customer>) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('customers').insert([{ ...customer, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('customers').insert([{ ...customer, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0] as Customer;
   },
@@ -70,7 +76,7 @@ export const customersService = {
   }
 };
 
-// --- Accommodations (Hotels/Houseboats) Service ---
+// --- Accommodations Service ---
 export const accommodationsService = {
   async getAll() {
     const { data, error } = await supabase.from('accommodations').select('*').order('name', { ascending: true });
@@ -83,8 +89,8 @@ export const accommodationsService = {
     return data;
   },
   async create(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('accommodations').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('accommodations').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   },
@@ -99,7 +105,7 @@ export const accommodationsService = {
   }
 };
 
-// --- Fleet Service (Providers/Drivers/Vehicles) ---
+// --- Fleet Service ---
 export const fleetService = {
   async getAll() {
     const { data, error } = await supabase.from('transport_providers').select('*').order('name', { ascending: true });
@@ -112,8 +118,8 @@ export const fleetService = {
     return data;
   },
   async create(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('transport_providers').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('transport_providers').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   },
@@ -133,14 +139,14 @@ export const fleetService = {
     return data;
   },
   async createDriver(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('drivers').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('drivers').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   },
   async createVehicle(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('vehicles').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('vehicles').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   }
@@ -149,19 +155,22 @@ export const fleetService = {
 // --- Finance Service ---
 export const financeService = {
   async getInvoices() {
-    const { data, error } = await supabase.from('invoices').select('*, bookings(customers(first_name, last_name))').order('created_at', { ascending: false });
+    const { data, error } = await supabase
+      .from('invoices')
+      .select('*, bookings(customers(first_name, last_name))')
+      .order('created_at', { ascending: false });
     if (error) throw error;
     return data;
   },
   async createInvoice(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('invoices').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('invoices').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   },
   async recordPayment(payload: any) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('payments').insert([{ ...payload, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('payments').insert([{ ...payload, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0];
   }
@@ -180,8 +189,8 @@ export const packagesService = {
     return data as TourPackage;
   },
   async create(pkg: Partial<TourPackage>) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('tour_packages').insert([{ ...pkg, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('tour_packages').insert([{ ...pkg, company_id: profile?.company_id }]).select();
     if (error) throw error;
     return data[0] as TourPackage;
   },
@@ -209,8 +218,12 @@ export const bookingsService = {
     return data;
   },
   async create(booking: Partial<Booking>) {
-    const company_id = await getCompanyId();
-    const { data, error } = await supabase.from('bookings').insert([{ ...booking, company_id }]).select();
+    const profile = await getMyProfile();
+    const { data, error } = await supabase.from('bookings').insert([{
+      ...booking,
+      company_id: profile?.company_id,
+      created_by: profile?.id
+    }]).select();
     if (error) throw error;
     return data[0] as Booking;
   },

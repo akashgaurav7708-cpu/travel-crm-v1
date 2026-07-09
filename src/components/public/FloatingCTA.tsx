@@ -25,7 +25,7 @@ const FloatingCTA = () => {
         </motion.button>
 
         <motion.a
-          href="https://wa.me/916006070550?text=Hello Bilu G Travels Kashmir, I want to book a Kashmir Tour Package. Please share complete details."
+          href="https://wa.me/916006070550"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}

@@ -76,9 +76,9 @@ function CustomerForm() {
       }
       router.push('/customers');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save customer:', error);
-      alert('Error saving customer profile.');
+      alert(`Error saving customer profile: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

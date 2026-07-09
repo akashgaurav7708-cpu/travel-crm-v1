@@ -38,7 +38,7 @@ export default function PackagesPage() {
           <p className="text-slate-500 font-medium">Curate and publish high-converting travel itineraries and package deals.</p>
         </div>
         <Link
-          href="/packages/new"
+          href="/inventory/packages/new"
           className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-100 hover:bg-blue-500 transition-all active:scale-95"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -100,12 +100,12 @@ export default function PackagesPage() {
                   <div>
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1">Starting From</p>
                     <div className="flex items-baseline text-slate-900">
-                       <span className="text-lg font-black">$</span>
+                       <span className="text-lg font-black">₹</span>
                        <span className="text-2xl font-black">{pkg.base_price?.toLocaleString()}</span>
                     </div>
                   </div>
                   <Link
-                    href={`/packages/new?id=${pkg.id}`}
+                    href={`/inventory/packages/new?id=${pkg.id}`}
                     className="h-12 px-6 rounded-2xl bg-slate-900 text-white text-xs font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl flex items-center"
                   >
                     Customize <ArrowUpRight className="ml-2 h-4 w-4" />
@@ -123,7 +123,7 @@ export default function PackagesPage() {
           <p className="text-slate-500 font-bold text-lg">No tour packages published.</p>
           <p className="text-slate-400 text-sm mt-1">Design your first premium travel experience to start selling.</p>
           <Link
-            href="/packages/new"
+            href="/inventory/packages/new"
             className="mt-6 inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:bg-slate-800 transition-all active:scale-95"
           >
             Design First Package

@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   // Public routes (Website)
   const publicRoutes = [
     '/',
-    '/tour-packages',
+    '/packages',
     '/offbeat-kashmir',
     '/gallery',
     '/contact',
@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
   const isPublicRoute = publicRoutes.some(route =>
     pathname === route ||
-    pathname.startsWith('/tour-packages/') ||
+    pathname.startsWith('/packages/') ||
     pathname.startsWith('/blog/')
   );
 
