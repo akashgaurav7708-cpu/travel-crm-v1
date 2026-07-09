@@ -188,6 +188,9 @@ export default function BookingsPage() {
                               <button onClick={() => { sendEmail(booking); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-blue-600 hover:bg-blue-50 flex items-center">
                                 <Mail className="h-3 w-3 mr-2" /> Email
                               </button>
+                              <button onClick={() => { pdfGenerator.generateVoucher(booking); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-orange-600 hover:bg-orange-50 flex items-center">
+                                <CreditCard className="h-3 w-3 mr-2" /> Download Voucher
+                              </button>
                               <Link href={`/bookings/new?id=${booking.id}`} className="w-full text-left px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center border-t">
                                 Edit Reservation
                               </Link>

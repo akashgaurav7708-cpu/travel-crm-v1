@@ -115,7 +115,7 @@ export default function PackageDetail() {
                 <div className="mb-8">
                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Package Cost</p>
                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-black text-brand-navy">${pkg.price}</span>
+                      <span className="text-4xl font-black text-brand-navy">₹${pkg.price}</span>
                       <span className="text-sm text-slate-400 font-medium">/ per person</span>
                    </div>
                    <p className="text-[10px] font-black text-brand-emerald uppercase tracking-widest mt-2">Inclusive of all taxes</p>
