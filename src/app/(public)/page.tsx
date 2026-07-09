@@ -270,7 +270,7 @@ function PackageCard({ image, title, duration, price, rating, destinations, onBo
         <div className="flex items-center justify-between pt-6 border-t border-slate-50">
           <div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Per Person</p>
-            <p className="text-2xl font-black text-brand-navy">${price}</p>
+            <p className="text-2xl font-black text-brand-navy">₹${price}</p>
           </div>
           <button
             onClick={onBook}
@@ -297,7 +297,7 @@ function OffbeatCard({ name, price, image, onExplore }: any) {
          <span className="text-brand-gold font-black text-[10px] uppercase tracking-widest mb-2 block">Offbeat Destination</span>
          <h4 className="text-2xl font-black text-white mb-2">{name}</h4>
          <div className="flex items-center justify-between">
-            <p className="text-white/80 font-bold">Starting ${price}</p>
+            <p className="text-white/80 font-bold">Starting ₹${price}</p>
             <ArrowRight size={18} className="text-brand-gold group-hover:translate-x-2 transition-transform" />
          </div>
       </div>
