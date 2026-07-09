@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2, Calendar, User, Package, CreditCard, Clock, Info, ShieldCheck, MapPin, DollarSign, Calculator } from 'lucide-react';
+import { Save, X, Loader2, Trash2, Calendar, User, Package, CreditCard, Clock, Info, ShieldCheck, MapPin, DollarSign, Calculator, Star } from 'lucide-react';
 import { bookingsService, customersService, packagesService } from '@/lib/services/index';
 import { Customer, TourPackage } from '@/types/crm';
 import { format, addDays } from 'date-fns';

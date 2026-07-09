@@ -99,7 +99,7 @@ const Sidebar = () => {
     {
       title: 'Operations',
       items: [
-        { name: 'Tour Packages', href: '/packages', icon: Package },
+        { name: 'Tour Packages', href: '/inventory/packages', icon: Package },
         { name: 'Active Bookings', href: '/bookings', icon: CalendarCheck },
         { name: 'Travel Calendar', href: '/operations/calendar', icon: Calendar },
         { name: 'Timeline Tracker', href: '/operations/timeline', icon: History },

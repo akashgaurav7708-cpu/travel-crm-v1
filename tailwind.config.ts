@@ -10,10 +10,13 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          navy: "#001F3F",
+          navy: "#0B1F3A",
+          royalblue: "#123C69",
           gold: "#D4AF37",
-          emerald: "#50C878",
           white: "#FFFFFF",
+          lightgrey: "#F8FAFC",
+          emerald: "#50C878",
+          whatsapp: "#25D366",
         },
       },
     },

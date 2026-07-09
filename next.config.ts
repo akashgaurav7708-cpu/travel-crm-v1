@@ -10,6 +10,22 @@ const nextConfig: NextConfig = {
     // Ensuring code is deployable for enterprise review
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+      },
+      {
+         protocol: 'https',
+         hostname: 'plus.unsplash.com',
+      }
+    ],
+  },
 };
 
 export default nextConfig;

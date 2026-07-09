@@ -23,10 +23,13 @@ export async function middleware(request: NextRequest) {
     '/contact',
     '/about-us',
     '/hotels-houseboats',
+    '/blog',
   ];
 
   const isPublicRoute = publicRoutes.some(route =>
-    pathname === route || pathname.startsWith('/tour-packages/')
+    pathname === route ||
+    pathname.startsWith('/tour-packages/') ||
+    pathname.startsWith('/blog/')
   );
 
   // Use a simple next() for public routes if Supabase is not configured

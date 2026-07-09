@@ -11,7 +11,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div>
             <span className="text-brand-gold font-black uppercase tracking-widest text-xs mb-3 block">Get in Touch</span>
-            <h1 className="text-4xl md:text-7xl font-black text-brand-navy tracking-tighter mb-8">Let's Plan Your <br/><span className="text-brand-gold italic">Dream Trip</span></h1>
+            <h1 className="text-4xl md:text-7xl font-black text-brand-navy tracking-tighter mb-8">Let&apos;s Plan Your <br/><span className="text-brand-gold italic">Dream Trip</span></h1>
             <p className="text-slate-500 text-lg mb-12 leading-relaxed">
               Have questions about our packages or want a customized itinerary? Our team of local experts is here to help you create the perfect Kashmir experience.
             </p>
