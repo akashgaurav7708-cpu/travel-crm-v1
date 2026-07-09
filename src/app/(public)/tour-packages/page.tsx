@@ -104,7 +104,7 @@ export default function PackagesListing() {
                     <div className="flex items-center justify-between pt-6 border-t border-slate-100">
                       <div>
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Starting At</p>
-                        <p className="text-2xl font-black text-brand-navy">₹{pkg.price}</p>
+                        <p className="text-2xl font-black text-brand-navy">${pkg.price}</p>
                       </div>
                       <button
                         onClick={() => openInquiry(pkg.name)}

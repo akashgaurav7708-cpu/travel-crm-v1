@@ -27,7 +27,7 @@ CREATE TABLE companies (
     email TEXT,
     phone TEXT,
     gst_number TEXT,
-    currency TEXT DEFAULT 'USD',
+    currency TEXT DEFAULT 'INR',
     timezone TEXT DEFAULT 'UTC',
     status TEXT DEFAULT 'active',
     plan_id UUID REFERENCES saas_plans(id),
@@ -298,29 +298,40 @@ CREATE TABLE audit_logs (
 
 -- Row Level Security (RLS) Configuration
 
-CREATE OR REPLACE FUNCTION get_my_company()
+-- Helper functions to avoid RLS recursion
+CREATE OR REPLACE FUNCTION get_auth_role()
+RETURNS user_role AS $$
+    SELECT role FROM profiles WHERE id = auth.uid();
+$$ LANGUAGE sql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_auth_company()
 RETURNS UUID AS $$
     SELECT company_id FROM profiles WHERE id = auth.uid();
-$$ LANGUAGE sql STABLE;
+$$ LANGUAGE sql SECURITY DEFINER;
 
 -- Multi-tenant isolation for all major tables
 DO $$
 DECLARE
     t TEXT;
 BEGIN
-    FOR t IN SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name NOT IN ('saas_plans', 'profiles', 'companies')
+    FOR t IN SELECT table_name FROM information_schema.tables
+             WHERE table_schema = 'public'
+             AND table_name NOT IN ('saas_plans', 'profiles', 'companies', 'audit_logs')
     LOOP
         EXECUTE 'ALTER TABLE ' || t || ' ENABLE ROW LEVEL SECURITY';
-        EXECUTE 'CREATE POLICY ' || t || '_tenant_isolation ON ' || t || ' USING (company_id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = ''super_admin'')';
+        EXECUTE 'DROP POLICY IF EXISTS ' || t || '_tenant_isolation ON ' || t;
+        EXECUTE 'CREATE POLICY ' || t || '_tenant_isolation ON ' || t || ' USING (company_id = get_auth_company() OR get_auth_role() = ''super_admin'')';
     END LOOP;
 END $$;
 
 -- Enable RLS for Profiles and Companies separately
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-CREATE POLICY profile_access ON profiles USING (company_id = get_my_company() OR role = 'super_admin');
+DROP POLICY IF EXISTS profile_access ON profiles;
+CREATE POLICY profile_access ON profiles USING (id = auth.uid() OR company_id = get_auth_company() OR get_auth_role() = 'super_admin');
 
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
-CREATE POLICY company_access ON companies USING (id = get_my_company() OR (SELECT role FROM profiles WHERE id = auth.uid()) = 'super_admin');
+DROP POLICY IF EXISTS company_access ON companies;
+CREATE POLICY company_access ON companies USING (id = get_auth_company() OR get_auth_role() = 'super_admin');
 
 -- v0.2 Automated User Onboarding Trigger
 CREATE OR REPLACE FUNCTION public.handle_new_user()

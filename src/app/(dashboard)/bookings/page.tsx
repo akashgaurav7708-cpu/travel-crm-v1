@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Plus, Search, Calendar, User, MapPin, Loader2, DollarSign, Filter, MoreVertical, CreditCard, ExternalLink, ArrowUpRight } from 'lucide-react';
+import { Plus, Search, Calendar, User, MapPin, Loader2, IndianRupee, Filter, MoreVertical, CreditCard, ExternalLink, ArrowUpRight, Share2, Mail, MessageSquare } from 'lucide-react';
 import { bookingsService } from '@/lib/services/index';
-import { Booking } from '@/types/crm';
+import { pdfGenerator } from '@/lib/pdf/generator';
 import { format } from 'date-fns';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadBookings() {
@@ -45,6 +46,18 @@ export default function BookingsPage() {
     }
   };
 
+  const shareOnWhatsApp = (booking: any) => {
+    const message = `Hello ${booking.customers?.first_name}, here are your booking details for ${booking.tour_packages?.name || 'your trip'}. Total: ₹${booking.total_amount}. Dates: ${booking.start_date} to ${booking.end_date}. Status: ${booking.status}`;
+    const url = `https://wa.me/${booking.customers?.phone?.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
+
+  const sendEmail = (booking: any) => {
+    const subject = `Booking Confirmation - #${booking.id.substring(0, 8).toUpperCase()}`;
+    const body = `Dear ${booking.customers?.first_name},\n\nYour booking for ${booking.tour_packages?.name || 'your trip'} is ${booking.status}.\n\nTotal Amount: ₹${booking.total_amount}\nDates: ${booking.start_date} to ${booking.end_date}\n\nThank you for choosing us!`;
+    window.location.href = `mailto:${booking.customers?.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   const filteredBookings = bookings.filter(b =>
     `${b.customers?.first_name} ${b.customers?.last_name} ${b.tour_packages?.name || ''} ${b.id}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -76,11 +89,6 @@ export default function BookingsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
-          <button className="px-4 py-2.5 border rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center">
-            <Filter className="h-4 w-4 mr-2" /> All Filters
-          </button>
-        </div>
       </div>
 
       {loading ? (
@@ -104,7 +112,7 @@ export default function BookingsPage() {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {filteredBookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-blue-50/30 transition-colors group">
+                  <tr key={booking.id} className="hover:bg-blue-50/30 transition-colors group relative">
                     <td className="px-6 py-5">
                       <div className="font-black text-blue-600 flex items-center">
                         <span className="opacity-30 mr-1">#</span>
@@ -145,7 +153,7 @@ export default function BookingsPage() {
                     <td className="px-6 py-5">
                       <div className="space-y-1">
                         <div className="text-slate-900 font-black flex items-center text-base">
-                          <DollarSign className="h-3.5 w-3.5" />
+                          <IndianRupee className="h-3.5 w-3.5" />
                           {booking.total_amount?.toLocaleString()}
                         </div>
                         <div className={`text-[10px] font-black uppercase tracking-widest flex items-center ${getPaymentStyle(booking.payment_status)}`}>
@@ -162,12 +170,30 @@ export default function BookingsPage() {
                         >
                            Builder <ArrowUpRight className="h-3 w-3 ml-1" />
                         </Link>
-                        <Link
-                          href={`/bookings/new?id=${booking.id}`}
-                          className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
-                        >
-                          <MoreVertical className="h-5 w-5" />
-                        </Link>
+                        <div className="relative">
+                          <button
+                            onClick={() => setActiveMenu(activeMenu === booking.id ? null : booking.id)}
+                            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
+                          >
+                            <MoreVertical className="h-5 w-5" />
+                          </button>
+                          {activeMenu === booking.id && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl border shadow-xl z-50 py-2">
+                              <button onClick={() => { pdfGenerator.generateQuotation(booking); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center">
+                                <ExternalLink className="h-3 w-3 mr-2" /> Download Quote
+                              </button>
+                              <button onClick={() => { shareOnWhatsApp(booking); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-green-600 hover:bg-green-50 flex items-center">
+                                <MessageSquare className="h-3 w-3 mr-2" /> WhatsApp
+                              </button>
+                              <button onClick={() => { sendEmail(booking); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-blue-600 hover:bg-blue-50 flex items-center">
+                                <Mail className="h-3 w-3 mr-2" /> Email
+                              </button>
+                              <Link href={`/bookings/new?id=${booking.id}`} className="w-full text-left px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center border-t">
+                                Edit Reservation
+                              </Link>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -182,7 +208,6 @@ export default function BookingsPage() {
             <CreditCard className="h-10 w-10" />
           </div>
           <p className="text-slate-500 font-bold text-lg">No active reservations.</p>
-          <p className="text-slate-400 text-sm mt-1">Ready to book a new tour? Create your first reservation here.</p>
           <Link
             href="/bookings/new"
             className="mt-6 inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:bg-slate-800 transition-all active:scale-95"

@@ -34,9 +34,9 @@ export default function PaymentsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-         <MetricCard title="Total Collected" value="$42,500" trend="+12.5%" color="green" />
-         <MetricCard title="Pending Balances" value="$8,940" trend="+2.4%" color="orange" />
-         <MetricCard title="Refunds Processed" value="$1,200" trend="-1.5%" color="blue" />
+         <MetricCard title="Total Collected" value="₹42,500" trend="+12.5%" color="green" />
+         <MetricCard title="Pending Balances" value="₹8,940" trend="+2.4%" color="orange" />
+         <MetricCard title="Refunds Processed" value="₹1,200" trend="-1.5%" color="blue" />
       </div>
 
       {loading ? (

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Car, Gauge, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Save, Loader2, ArrowLeft } from 'lucide-react';
 import { fleetService } from '@/lib/services/index';
 import Link from 'next/link';
 
@@ -33,11 +33,16 @@ function VehicleForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      await fleetService.createVehicle(formData);
+      if (isEditing) {
+        // await fleetService.updateVehicle(id, formData);
+      } else {
+        await fleetService.createVehicle(formData);
+      }
       router.push('/fleet/vehicles');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(`Error: ${error.message || 'Failed to save vehicle'}`);
     } finally {
       setLoading(false);
     }

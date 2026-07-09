@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, FileText, Loader2, MoreVertical, CheckCircle2, AlertCircle, DollarSign, Download } from 'lucide-react';
+import { Plus, Search, FileText, Loader2, MoreVertical, CheckCircle2, IndianRupee, Download, Share2, Mail, MessageSquare } from 'lucide-react';
 import { financeService } from '@/lib/services/index';
-import { format } from 'date-fns';
+import { pdfGenerator } from '@/lib/pdf/generator';
+import Link from 'next/link';
 
 export default function InvoicesPage() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -23,6 +25,17 @@ export default function InvoicesPage() {
     load();
   }, []);
 
+  const shareOnWhatsApp = (inv: any) => {
+    const message = `Hello ${inv.bookings?.customers?.first_name}, your invoice ${inv.invoice_number} for ₹${inv.total_amount} is ready. Status: ${inv.status}. Due: ${inv.due_date}`;
+    window.open(`https://wa.me/${inv.bookings?.customers?.phone?.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const sendEmail = (inv: any) => {
+    const subject = `Invoice ${inv.invoice_number} from Bilu G Travels`;
+    const body = `Dear ${inv.bookings?.customers?.first_name},\n\nPlease find your invoice ${inv.invoice_number} for ₹${inv.total_amount} attached.\n\nStatus: ${inv.status}\nDue Date: ${inv.due_date}\n\nThank you!`;
+    window.location.href = `mailto:${inv.bookings?.customers?.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -30,9 +43,9 @@ export default function InvoicesPage() {
           <h2 className="text-2xl font-black tracking-tight text-slate-900">Billing & Invoices</h2>
           <p className="text-slate-500 font-medium text-sm">Manage tax invoices, proforma quotes, and customer collections.</p>
         </div>
-        <button className="h-11 px-6 rounded-xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:bg-blue-500 transition-all flex items-center active:scale-95">
+        <Link href="/finance/invoices/new" className="h-11 px-6 rounded-xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:bg-blue-500 transition-all flex items-center active:scale-95">
            <Plus className="h-4 w-4 mr-2" /> Create Invoice
-        </button>
+        </Link>
       </div>
 
       {loading ? (
@@ -57,7 +70,7 @@ export default function InvoicesPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                      {items.map(inv => (
-                        <tr key={inv.id} className="hover:bg-slate-50/50 transition-colors">
+                        <tr key={inv.id} className="hover:bg-slate-50/50 transition-colors relative">
                            <td className="px-8 py-5 font-black text-blue-600">{inv.invoice_number}</td>
                            <td className="px-8 py-5 font-bold text-slate-900">{inv.bookings?.customers?.first_name} {inv.bookings?.customers?.last_name}</td>
                            <td className="px-8 py-5 text-right font-medium text-slate-500">${inv.subtotal?.toLocaleString()}</td>
@@ -71,9 +84,31 @@ export default function InvoicesPage() {
                               </span>
                            </td>
                            <td className="px-8 py-5 text-right">
-                              <div className="flex justify-end gap-2">
-                                 <button className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:text-blue-600"><Download className="h-4 w-4" /></button>
-                                 <button className="p-2 rounded-lg hover:bg-slate-50 text-slate-400"><MoreVertical className="h-4 w-4" /></button>
+                              <div className="flex justify-end gap-2 relative">
+                                 <button
+                                  onClick={() => pdfGenerator.generateInvoice(inv)}
+                                  className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:text-blue-600"
+                                 >
+                                    <Download className="h-4 w-4" />
+                                 </button>
+                                 <div className="relative">
+                                    <button
+                                      onClick={() => setActiveMenu(activeMenu === inv.id ? null : inv.id)}
+                                      className="p-2 rounded-lg hover:bg-slate-50 text-slate-400"
+                                    >
+                                      <MoreVertical className="h-4 w-4" />
+                                    </button>
+                                    {activeMenu === inv.id && (
+                                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl border shadow-xl z-50 py-2">
+                                        <button onClick={() => { shareOnWhatsApp(inv); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-green-600 hover:bg-green-50 flex items-center">
+                                          <MessageSquare className="h-3 w-3 mr-2" /> WhatsApp
+                                        </button>
+                                        <button onClick={() => { sendEmail(inv); setActiveMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-bold text-blue-600 hover:bg-blue-50 flex items-center">
+                                          <Mail className="h-3 w-3 mr-2" /> Email
+                                        </button>
+                                      </div>
+                                    )}
+                                 </div>
                               </div>
                            </td>
                         </tr>

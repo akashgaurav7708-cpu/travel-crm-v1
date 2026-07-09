@@ -1,18 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Trash2, Map, DollarSign, Clock, Info, CheckCircle2, Plus, Image as ImageIcon } from 'lucide-react';
-import { packagesService } from '@/lib/services/index';
+import { Save, X, Loader2, Trash2, Map, IndianRupee, Clock, Plus, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
+import { packagesService, storageService } from '@/lib/services/index';
 
 function PackageForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const isEditing = !!id;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEditing);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -22,6 +24,7 @@ function PackageForm() {
     destinations: [] as string[],
     inclusions: [] as string[],
     exclusions: [] as string[],
+    images: [] as string[],
   });
 
   const [tempDest, setTempDest] = useState('');
@@ -41,6 +44,7 @@ function PackageForm() {
               destinations: data.destinations || [],
               inclusions: data.inclusions || [],
               exclusions: data.exclusions || [],
+              images: data.images || [],
             });
           }
         } catch (error) {
@@ -53,6 +57,24 @@ function PackageForm() {
     }
   }, [id]);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const path = `packages/${Date.now()}-${file.name}`;
+      await storageService.uploadFile('media', path, file);
+      const url = await storageService.getPublicUrl('media', path);
+      setFormData(prev => ({ ...prev, images: [...prev.images, url] }));
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -64,8 +86,9 @@ function PackageForm() {
       }
       router.push('/packages');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save package:', error);
+      alert(`Error saving package: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -173,9 +196,9 @@ function PackageForm() {
                   />
                </div>
                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Base Price ($)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Base Price (₹)</label>
                   <div className="relative">
-                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                     <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                      <input
                         type="number"
                         className="w-full rounded-xl border border-slate-100 bg-slate-50/50 pl-10 pr-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500"
@@ -215,12 +238,23 @@ function PackageForm() {
 
           <section className="bg-white rounded-xl border shadow-sm p-6 space-y-4">
              <div className="flex items-center gap-2 text-blue-600 font-bold text-sm uppercase tracking-wider">
-                <ImageIcon className="h-4 w-4" /> Cover Asset
+                <ImageIcon className="h-4 w-4" /> Package Images
              </div>
-             <div className="aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex flex-col items-center justify-center text-slate-300 hover:bg-slate-100 transition-all cursor-pointer">
-                <ImageIcon className="h-8 w-8 mb-2 opacity-50" />
-                <span className="text-[10px] font-black uppercase">Upload Cover</span>
+             <div className="grid grid-cols-2 gap-2 mb-4">
+                {formData.images.map((url, i) => (
+                   <div key={i} className="relative aspect-video rounded-lg overflow-hidden border">
+                      <img src={url} alt="Package" className="w-full h-full object-cover" />
+                      <button type="button" onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, idx) => idx !== i) }))} className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full">
+                         <X className="h-3 w-3" />
+                      </button>
+                   </div>
+                ))}
              </div>
+             <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="w-full aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex flex-col items-center justify-center text-slate-300 hover:bg-slate-100 transition-all cursor-pointer">
+                {uploading ? <Loader2 className="h-8 w-8 mb-2 animate-spin" /> : <ImageIcon className="h-8 w-8 mb-2 opacity-50" />}
+                <span className="text-[10px] font-black uppercase">{uploading ? 'Uploading...' : 'Upload Asset'}</span>
+             </button>
+             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
           </section>
         </div>
       </form>

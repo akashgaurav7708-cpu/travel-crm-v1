@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Save, X, Loader2, Anchor, Star, MapPin, ArrowLeft } from 'lucide-react';
+import { Save, Loader2, ArrowLeft } from 'lucide-react';
 import { accommodationsService } from '@/lib/services/index';
 import Link from 'next/link';
 
@@ -26,8 +26,27 @@ function HouseboatForm() {
 
   useEffect(() => {
     if (id) {
-       // Fetch logic...
-       setFetching(false);
+       async function load() {
+          try {
+             const data = await accommodationsService.getById(id as string);
+             if (data) {
+                setFormData({
+                   name: data.name || '',
+                   type: data.type || 'houseboat',
+                   star_rating: data.star_rating || 4,
+                   location: data.location || '',
+                   address: data.address || '',
+                   description: data.description || '',
+                   amenities: data.amenities || [],
+                });
+             }
+          } catch (err) {
+             console.error(err);
+          } finally {
+             setFetching(false);
+          }
+       }
+       load();
     }
   }, [id]);
 
@@ -35,11 +54,16 @@ function HouseboatForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      await accommodationsService.create(formData);
+      if (isEditing) {
+         await accommodationsService.update(id as string, formData);
+      } else {
+         await accommodationsService.create(formData);
+      }
       router.push('/inventory/houseboats');
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(`Error: ${error.message || 'Failed to save houseboat'}`);
     } finally {
       setLoading(false);
     }

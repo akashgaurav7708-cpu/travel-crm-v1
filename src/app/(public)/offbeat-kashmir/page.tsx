@@ -40,7 +40,7 @@ export default function OffbeatKashmir() {
                  </div>
                  <div className="absolute -bottom-6 -right-6 md:right-auto md:-left-6 bg-brand-gold text-brand-navy p-6 rounded-[2rem] shadow-xl">
                     <p className="text-[10px] font-black uppercase tracking-widest mb-1">Starting At</p>
-                    <p className="text-2xl font-black">₹{dest.price}</p>
+                    <p className="text-2xl font-black">${dest.price}</p>
                  </div>
                </div>
                <div className="flex-1 space-y-6">
