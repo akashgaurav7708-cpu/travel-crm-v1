@@ -111,6 +111,7 @@ const Sidebar = () => {
         { name: 'Itinerary Builder', href: '/itinerary-builder', icon: Map },
         { name: 'AI Generator', href: '/ai-tools', icon: Sparkles },
         { name: 'Cost Calculator', href: '/ai-tools/calculator', icon: Calculator },
+        { name: 'Web CMS Portal', href: '/dashboard/cms', icon: Settings },
       ]
     },
     {
