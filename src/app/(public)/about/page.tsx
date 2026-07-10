@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, Compass, Heart, Award, Sparkles, MapPin, Phone, Mail } from 'lucide-react';
+import { ShieldCheck, Compass, Heart, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
           <span className="text-brand-gold font-display font-bold uppercase tracking-widest text-xs mb-3 block">Who We Are</span>
           <h1 className="text-4xl md:text-7xl font-serif font-black tracking-tight mb-6">About Bilu G Travels</h1>
           <p className="text-slate-500 dark:text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            Discover the core ethos, high-end hospitality standards, and local Himalayan heritage behind Kashmir's most trusted Destination Management Company (DMC).
+            Discover the core ethos, high-end hospitality standards, and local Himalayan heritage behind Kashmir&apos;s most trusted Destination Management Company (DMC).
           </p>
           <div className="h-1 w-20 bg-brand-gold rounded mx-auto mt-4"></div>
         </div>
@@ -27,7 +27,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="relative rounded-[3rem] overflow-hidden h-[450px] shadow-2xl border border-brand-gold/15"
           >
-            <img src="https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=1000" alt="Kashmir Dal Lake Home" className="w-full h-full object-cover" />
+            <img src="https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=1000" alt="Kashmir Dal Lake Home" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent"></div>
           </motion.div>
 
@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-brand-gold text-xs font-display font-black uppercase tracking-widest">A Personal Message</span>
             <h2 className="text-2xl md:text-4xl font-serif font-black text-brand-navy dark:text-white leading-tight">Welcome from Javid Farooq</h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-              "As a native Kashmiri, travel is not just a commercial business to us; it is a sacred extension of local hospitality. For over a decade, we have hosted honeymooners, large multi-generational families, trek adventurers, and high-level corporate delegates. We own premier houseboats on Dal Lake and manage a private luxury transport fleet directly, ensuring that no middle-commissions are charged to our guests. Everything is designed around absolute luxury, safety, and authentic Himalayan beauty."
+              &quot;As a native Kashmiri, travel is not just a commercial business to us; it is a sacred extension of local hospitality. For over a decade, we have hosted honeymooners, large multi-generational families, trek adventurers, and high-level corporate delegates. We own premier houseboats on Dal Lake and manage a private luxury transport fleet directly, ensuring that no middle-commissions are charged to our guests. Everything is designed around absolute luxury, safety, and authentic Himalayan beauty.&quot;
             </p>
             <div className="pt-4 space-y-3">
               <div className="flex items-center gap-3">
