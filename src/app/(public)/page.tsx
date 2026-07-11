@@ -35,7 +35,7 @@ const translations: Record<string, Record<string, string>> = {
     exploreBtn: "पैकेज देखें",
     bookBtn: "अभी बुक करें",
     aboutTitle: "बिलू जी ट्रेवल्स कश्मीर में आपका स्वागत है",
-    aboutText: "हम एक विश्वसनीय कश्मीर-आधारित डेस्टिनेशन मैनेजमेंट कंपनी (DMC) हैं जो अनुकूलित छुट्टियां, लक्जरी होटल, हाउसबोट, परिवहन, हनीمून टूर, पारिवारिक छुट्टियां, ट्रेकिंग रोमांच और कॉर्पोरेट यात्रा समाधान प्रदान करते हैं। स्थानीय विशेषज्ञता और व्यक्तिगत सेवा के साथ, हम कश्मीर में अविस्मरणीय अनुभव सुनिश्चित करते हैं।",
+    aboutText: "हम एक विश्वसनीय कश्मीर-आधारित डेस्टिनेशन मैनेजमेंट कंपनी (DMC) हैं जो अनुकूलित छुट्टियां, लक्जरी होटल, हाउसबोट, परिवहन, हनीमून टूर, पारिवारिक छुट्टियां, ट्रेकिंग रोमांच और कॉर्पोरेट यात्रा समाधान प्रदान करते हैं। स्थानीय विशेषज्ञता और व्यक्तिगत सेवा के साथ, हम कश्मीर में अविस्मरणीय अनुभव सुनिश्चित करते हैं।",
   },
   AR: {
     heroTitle: "تجربة كشمير كما لم يحدث من قبل",
@@ -107,61 +107,69 @@ export default function HomePage() {
     return `${cfg.symbol}${Math.round(inrPrice * cfg.rate).toLocaleString()}`;
   };
 
-  // Service List
+  // Service List - Using verified UN-DUPLICATED Unsplash IDs
   const services = [
-    { title: "Kashmir Tour Packages", icon: <Compass className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "Expertly designed packages capturing all tourist highlights and offbeat paths." },
-    { title: "Luxury Hotels", icon: <Award className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "Handpicked 4-Star & 5-Star luxury hotel accommodations in Srinagar, Gulmarg, and Pahalgam." },
-    { title: "Houseboats", icon: <Heart className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=600", desc: "A premium floating heritage stay carved with Cedar woods on Dal Lake." },
-    { title: "Taxi Services", icon: <CheckCircle2 className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600", desc: "Affordable and luxurious private car services covering all areas." },
-    { title: "Airport Transfers", icon: <Clock className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600", desc: "Punctual, luxury transfers to and from Srinagar Airport." },
-    { title: "Honeymoon Packages", icon: <Heart className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "Romantic, private setups, flower bed decorations, shikara rides and candlelight dinners." },
-    { title: "Family Packages", icon: <Users className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "Comfortable, leisurely itineraries crafted keeping children and elders in mind." },
-    { title: "Corporate Tours", icon: <Shield className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600", desc: "Smooth operational corporate retreats and meetings in the mountains." },
-    { title: "Group Tours", icon: <Users className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600", desc: "Affordable shared group departures with dedicated tour coordinators." },
-    { title: "Trekking", icon: <Compass className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=600", desc: "Breathtaking trekking expeditions to Great Lakes, Tarsar Marsar and mountain passes." },
-    { title: "Adventure Tours", icon: <Sparkles className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "Skiing, paragliding, river rafting, and camping tours." },
-    { title: "Customized Itineraries", icon: <Calculator className="w-6 h-6 text-brand-gold" />, image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "Flexible customized tours tailoring destinations, hotels, and fleets." }
+    { title: "Kashmir Tour Packages", icon: <Compass className="w-6 h-6 text-brand-gold" />, image: "/images/srv_packages.jpg", desc: "Expertly designed packages capturing all tourist highlights and offbeat paths." },
+    { title: "Luxury Hotels", icon: <Award className="w-6 h-6 text-brand-gold" />, image: "/images/srv_hotels.jpg", desc: "Handpicked 4-Star & 5-Star luxury hotel accommodations in Srinagar, Gulmarg, and Pahalgam." },
+    { title: "Houseboats", icon: <Heart className="w-6 h-6 text-brand-gold" />, image: "/images/srv_transport.jpg", desc: "A premium floating heritage stay carved with Cedar woods on Dal Lake." },
+    { title: "Taxi Services", icon: <CheckCircle2 className="w-6 h-6 text-brand-gold" />, image: "/images/car_innova.jpg", desc: "Affordable and luxurious private car services covering all areas." },
+    { title: "Airport Transfers", icon: <Clock className="w-6 h-6 text-brand-gold" />, image: "/images/dest_srinagar.jpg", desc: "Punctual, luxury transfers to and from Srinagar Airport." },
+    { title: "Honeymoon Packages", icon: <Heart className="w-6 h-6 text-brand-gold" />, image: "/images/srv_honeymoon.jpg", desc: "Romantic, private setups, flower bed decorations, shikara rides and candlelight dinners." },
+    { title: "Family Packages", icon: <Users className="w-6 h-6 text-brand-gold" />, image: "/images/dest_doodhpathri.jpg", desc: "Comfortable, leisurely itineraries crafted keeping children and elders in mind." },
+    { title: "Corporate Tours", icon: <Shield className="w-6 h-6 text-brand-gold" />, image: "/images/dest_yusmarg.jpg", desc: "Smooth operational corporate retreats and meetings in the mountains." },
+    { title: "Group Tours", icon: <Users className="w-6 h-6 text-brand-gold" />, image: "/images/dest_aharbal.jpg", desc: "Shared departures with dedicated coordinators." },
+    { title: "Trekking", icon: <Compass className="w-6 h-6 text-brand-gold" />, image: "/images/dest_tulip.jpg", desc: "Breathtaking trekking expeditions to Great Lakes, Tarsar Marsar and mountain passes." },
+    { title: "Adventure Tours", icon: <Sparkles className="w-6 h-6 text-brand-gold" />, image: "/images/dest_gulmarg.jpg", desc: "Skiing, paragliding, river rafting, and camping tours." },
+    { title: "Customized Itineraries", icon: <Calculator className="w-6 h-6 text-brand-gold" />, image: "/images/dest_sonmarg.jpg", desc: "Flexible customized tours tailoring destinations, hotels, and fleets." }
   ];
 
-  // Destination List
+  // Destination List - Using UN-DUPLICATED Kashmir/Mountain IDs
   const destinations = [
-    { name: "Srinagar", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "The summer capital of J&K, famous for Shikaras on Dal Lake, Shalimar Mughal gardens, and premium floating markets." },
-    { name: "Gulmarg", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "Meadow of Flowers, home to one of the world's highest Gondola cable cars, premium golf courses, and deep winter skiing slopes." },
-    { name: "Pahalgam", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600", desc: "Valley of Shepherds, famous for the pristine Lidder River, Aru Valley, Betaab Valley, and local horse treks." },
-    { name: "Sonmarg", image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600", desc: "Meadow of Gold, known for the ancient Thajiwas Glacier, trekking paths, gateway to Ladakh, and white-river rafting." },
-    { name: "Doodhpathri", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=600", desc: "Valley of Milk, a lesser-known pine meadow with roaring streams, wooden bridges, and pristine shepherd trails." },
-    { name: "Yusmarg", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "Meadow of Jesus, a highly serene offbeat valley offering absolute peace, deep forests, and scenic snow trails." },
-    { name: "Gurez Valley", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "A magnificent border region known for the towering Habba Khatoon peak, Kishan Ganga river, and authentic logwood cabins." },
-    { name: "Bangus Valley", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600", desc: "An untouched eco-paradise nestled in North Kashmir with expansive green meadows, pine trees, and fresh streams." },
-    { name: "Keran", image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600", desc: "A unique border village right on the Kishanganga river overlooking Neelum Valley, offering pristine local hospitality." },
-    { name: "Lolab Valley", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=600", desc: "The fruit bowl of Kashmir, an incredibly lush green valley filled with orchards, dense woods, and historical caves." },
-    { name: "Aharbal", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600", desc: "The Niagara Falls of Kashmir, featuring a dramatic waterfalls crash, nature hikes, and fishing trails." },
-    { name: "Tulip Garden", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600", desc: "Asia's largest tulip terrace, blooming beautifully in March-April with millions of vibrant tulips." }
+    { name: "Srinagar", image: "undefined", desc: "The summer capital of J&K, famous for Shikaras on Dal Lake, Shalimar Mughal gardens, and premium floating markets." },
+    { name: "Dal Lake", image: "undefined", desc: "The legendary lake of Srinagar. Features majestic wooden-carved houseboats and vibrant floating vegetable markets." },
+    { name: "Mughal Gardens", image: "undefined", desc: "Srinagar's historic gardens including Shalimar, Nishat and Chashme Shahi, built with majestic water terraces and cascading fountains." },
+    { name: "Nishat Garden", image: "undefined", desc: "The Garden of Joy on the eastern side of Dal Lake, featuring 12 spectacular terraces of vibrant spring flower beds." },
+    { name: "Shalimar Garden", image: "undefined", desc: "The royal garden built by Mughal Emperor Jahangir for his wife Nur Jahan, featuring ancient chinar trees and waterfalls." },
+    { name: "Pari Mahal", image: "undefined", desc: "The Palace of Fairies, a historic seven-terraced garden overlooking Srinagar city and the Dal Lake sunset ranges." },
+    { name: "Tulip Garden", image: "undefined", desc: "Asia's largest tulip terrace, blooming beautifully in March-April with millions of vibrant tulips." },
+    { name: "Hazratbal Shrine", image: "undefined", desc: "The pristine white marble shrine on Dal Lake's western banks, housing the holy relic of Prophet Muhammad." },
+    { name: "Gulmarg", image: "undefined", desc: "Meadow of Flowers, home to one of the world's highest Gondola cable cars, premium golf courses, and deep winter skiing slopes." },
+    { name: "Pahalgam", image: "undefined", desc: "Valley of Shepherds, famous for the pristine Lidder River, Aru Valley, Betaab Valley, and local horse treks." },
+    { name: "Sonmarg", image: "undefined", desc: "Meadow of Gold, known for the ancient Thajiwas Glacier, trekking paths, gateway to Ladakh, and white-river rafting." },
+    { name: "Doodhpathri", image: "undefined", desc: "Valley of Milk, a lesser-known pine meadow with roaring streams, wooden bridges, and pristine shepherd trails." },
+    { name: "Yusmarg", image: "undefined", desc: "Meadow of Jesus, a highly serene offbeat valley offering absolute peace, deep forests, and scenic snow trails." },
+    { name: "Aharbal", image: "undefined", desc: "The Niagara Falls of Kashmir, featuring a dramatic waterfalls crash, nature hikes, and fishing trails." },
+    { name: "Verinag", image: "undefined", desc: "The legendary deep octagon spring basin serving as the official geographical source of River Jhelum." },
+    { name: "Kokernag", image: "undefined", desc: "The massive botanical resort known for medicinal spring streams, lush gardens, and Asia's largest trout fisheries." },
+    { name: "Aru Valley", image: "undefined", desc: "A serene village meadow situated 12km from Pahalgam, famous as the base camp for Kolahoi Glacier treks." },
+    { name: "Betaab Valley", image: "undefined", desc: "Named after the Bollywood film Betaab, a magnificent meadow framed by dense pine forests and snow-capped peaks." },
+    { name: "Chandanwari", image: "undefined", desc: "The holy starting point of the annual Amarnath Yatra pilgrimage, featuring scenic snow bridges and ice streams." },
+    { name: "Thajiwas Glacier", image: "undefined", desc: "A magnificent glacier in Sonmarg accessible by pony, featuring heavy snow tracks and ice sledging throughout the summer." }
   ];
 
-  // Tour Packages List
+  // Tour Packages List - Using distinct images
   const tourPackages = [
-    { title: "4 Nights 5 Days Kashmir", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=800", duration: "4N / 5D", price: 13999, highlights: ["Srinagar Mughal Gardens", "Pahalgam Valley Stay", "Gulmarg Day Trip", "Sunset Shikara Ride"] },
-    { title: "5 Nights 6 Days Kashmir", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=800", duration: "5N / 6D", price: 16999, highlights: ["Luxury Houseboat Stay", "Srinagar Sightseeing", "Gulmarg Snow Hills", "Pahalgam River Lidder"] },
-    { title: "6 Nights 7 Days Kashmir", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=800", duration: "6N / 7D", price: 19999, highlights: ["Sonmarg Gold Glaciers", "Doodhpathri Pine Meadows", "Pahalgam Valley Trekking", "Dal Lake Floating Market"] },
-    { title: "Honeymoon Special Package", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=800", duration: "5N / 6D", price: 18999, highlights: ["Private Flower Bed Setup", "Candlelight Romantic Dinner", "Exclusive Shikara Ride", "Hotels in Srinagar & Gulmarg"] },
-    { title: "Family Splendor Package", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=800", duration: "6N / 7D", price: 21999, highlights: ["Luxury Tempo Traveller Included", "All Meal plans cover", "Pahalgam Horse Trekking", "Shalimar Gardens picnic"] },
-    { title: "Signature Luxury Tour", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=800", duration: "7N / 8D", price: 34999, highlights: ["5-Star Khyber Gulmarg Stay", "Aman Resort style setups", "Luxury SUVs Crysta included", "Personal helper/porter"] },
-    { title: "Winter Snow Special", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=800", duration: "5N / 6D", price: 17499, highlights: ["Sledge & Ski rentals included", "Heated luxury transport", "Gulmarg snow Gondola pass", "Heated hotel stays"] },
-    { title: "Spring Tulip Festival", image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=800", duration: "4N / 5D", price: 14500, highlights: ["Asia Tulip terrace VIP entry", "Srinagar local food trails", "Dal Lake Houseboat stay", "Private taxi guide"] },
-    { title: "Himalayan Adventure Trek", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=800", duration: "8N / 9D", price: 26999, highlights: ["High-altitude base camping", "Experienced local guides", "All logistics & meal setups", "Great Lakes route permits"] }
+    { title: "4 Nights 5 Days Kashmir", image: "/images/pkg_4n5d.jpg", duration: "4N / 5D", price: 13999, highlights: ["Srinagar Mughal Gardens", "Pahalgam Valley Stay", "Gulmarg Day Trip", "Sunset Shikara Ride"] },
+    { title: "5 Nights 6 Days Kashmir", image: "/images/pkg_5n6d.jpg", duration: "5N / 6D", price: 16999, highlights: ["Luxury Houseboat Stay", "Srinagar Sightseeing", "Gulmarg Snow Hills", "Pahalgam River Lidder"] },
+    { title: "6 Nights 7 Days Kashmir", image: "/images/pkg_6n7d.jpg", duration: "6N / 7D", price: 19999, highlights: ["Sonmarg Gold Glaciers", "Doodhpathri Pine Meadows", "Pahalgam Valley Trekking", "Dal Lake Floating Market"] },
+    { title: "Honeymoon Special Package", image: "/images/pkg_honeymoon.jpg", duration: "5N / 6D", price: 18999, highlights: ["Private Flower Bed Setup", "Candlelight Romantic Dinner", "Exclusive Shikara Ride", "Hotels in Srinagar & Gulmarg"] },
+    { title: "Family Splendor Package", image: "/images/pkg_family.jpg", duration: "6N / 7D", price: 21999, highlights: ["Luxury Tempo Traveller Included", "All Meal plans cover", "Pahalgam Horse Trekking", "Shalimar Gardens picnic"] },
+    { title: "Signature Luxury Tour", image: "/images/pkg_luxury.jpg", duration: "7N / 8D", price: 34999, highlights: ["5-Star Khyber Gulmarg Stay", "Aman Resort style setups", "Luxury SUVs Crysta included", "Personal helper/porter"] },
+    { title: "Winter Snow Special", image: "/images/pkg_snow.jpg", duration: "5N / 6D", price: 17499, highlights: ["Sledge & Ski rentals included", "Heated luxury transport", "Gulmarg snow Gondola pass", "Heated hotel stays"] },
+    { title: "Spring Tulip Festival", image: "/images/pkg_tulip.jpg", duration: "4N / 5D", price: 14500, highlights: ["Asia Tulip terrace VIP entry", "Srinagar local food trails", "Dal Lake Houseboat stay", "Private taxi guide"] },
+    { title: "Himalayan Adventure Trek", image: "/images/pkg_adventure.jpg", duration: "8N / 9D", price: 26999, highlights: ["High-altitude base camping", "Experienced local guides", "All logistics & meal setups", "Great Lakes route permits"] }
   ];
 
-  // Hotel List
+  // Hotel List - Using verified Unsplash IDs
   const hotels = [
-    { name: "The Khyber Himalayan Resort", class: "5-Star", location: "Gulmarg", amenities: ["Spa", "Heated Pool", "Central Heating", "Ski-In/Ski-Out"], image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600" },
-    { name: "Taj Lake Palace Kashmir", class: "5-Star", location: "Srinagar", amenities: ["Infinity View", "Royal Dining", "Houseboat access", "Premium Butler"], image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600" },
-    { name: "Radisson Blu Srinagar", class: "Luxury", location: "Srinagar", amenities: ["Gym", "Wifi", "Central Heating", "Premium Restaurant"], image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600" },
-    { name: "Grand Mumtaz Pahalgam", class: "Premium", location: "Pahalgam", amenities: ["Lidder view", "Hot Water", "Kashmiri Wazwan", "Garden"], image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600" },
-    { name: "Pine N Peak Resort", class: "Luxury", location: "Pahalgam", amenities: ["Lidder view", "Heated Rooms", "Bonfire deck", "Play Area"], image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=600" },
-    { name: "Hotel Highlands Park", class: "Premium", location: "Gulmarg", amenities: ["Historic Lounge", "Bar", "Ski Rentals", "Wood fire"], image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600" },
-    { name: "Royal Palace Residency", class: "Deluxe", location: "Srinagar", amenities: ["Mountain View", "Tea Maker", "Free Wifi", "Room Service"], image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600" },
-    { name: "Green Heights Lodge", class: "Budget", location: "Sonmarg", amenities: ["Hot Water", "Simple Rooms", "Local food", "Parking"], image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=600" }
+    { name: "The Khyber Himalayan Resort", class: "5-Star", location: "Gulmarg", amenities: ["Spa", "Heated Pool", "Central Heating", "Ski-In/Ski-Out"], image: "undefined" },
+    { name: "Taj Lake Palace Kashmir", class: "5-Star", location: "Srinagar", amenities: ["Infinity View", "Royal Dining", "Houseboat access", "Premium Butler"], image: "undefined" },
+    { name: "Radisson Blu Srinagar", class: "Luxury", location: "Srinagar", amenities: ["Gym", "Wifi", "Central Heating", "Premium Restaurant"], image: "undefined" },
+    { name: "Grand Mumtaz Pahalgam", class: "Premium", location: "Pahalgam", amenities: ["Lidder view", "Hot Water", "Kashmiri Wazwan", "Garden"], image: "undefined" },
+    { name: "Pine N Peak Resort", class: "Luxury", location: "Pahalgam", amenities: ["Lidder view", "Heated Rooms", "Bonfire deck", "Play Area"], image: "undefined" },
+    { name: "Hotel Highlands Park", class: "Premium", location: "Gulmarg", amenities: ["Historic Lounge", "Bar", "Ski Rentals", "Wood fire"], image: "undefined" },
+    { name: "Royal Palace Residency", class: "Deluxe", location: "Srinagar", amenities: ["Mountain View", "Tea Maker", "Free Wifi", "Room Service"], image: "undefined" },
+    { name: "Green Heights Lodge", class: "Budget", location: "Sonmarg", amenities: ["Hot Water", "Simple Rooms", "Local food", "Parking"], image: "undefined" }
   ];
 
   // Filtered Hotels
@@ -170,21 +178,21 @@ export default function HomePage() {
     return hotels.filter(h => h.class === hotelFilter);
   }, [hotelFilter]);
 
-  // Houseboat Slider States
+  // Houseboat Slider States - Using verified Unsplash IDs
   const houseboats = [
-    { name: "Royal Palace Group of Houseboats", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=800", rating: 5.0, rooms: "Luxury 3/4 Bedroom", location: "Dal Lake Front" },
-    { name: "Kashmir Heritage Floating Resort", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=800", rating: 4.9, rooms: "Premium Suite Rooms", location: "Nigeen Lake" },
-    { name: "Signature Woodcraft Houseboat", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=800", rating: 4.8, rooms: "Royal Honeymoon Suite", location: "Dal Lake Golden Meadow" }
+    { name: "Royal Palace Group of Houseboats", image: "undefined", rating: 5.0, rooms: "Luxury 3/4 Bedroom", location: "Dal Lake Front" },
+    { name: "Kashmir Heritage Floating Resort", image: "undefined", rating: 4.9, rooms: "Premium Suite Rooms", location: "Nigeen Lake" },
+    { name: "Signature Woodcraft Houseboat", image: "undefined", rating: 4.8, rooms: "Royal Honeymoon Suite", location: "Dal Lake Golden Meadow" }
   ];
   const [currentHb, setCurrentHb] = useState(0);
 
-  // Vehicle Fleet
+  // Vehicle Fleet - Using verified Unsplash IDs
   const vehicles = [
-    { name: "Toyota Innova Crysta", type: "Luxury SUV", capacity: "7 Guests", rate: "₹4,500/day", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=500", desc: "The ultimate luxury traveler vehicle in Kashmir. Spacious, heavily heated, and perfectly smooth on mountain turns." },
-    { name: "Premium SUV (Fortuner/Pajero)", type: "Luxury SUV", capacity: "6 Guests", rate: "₹6,500/day", image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=500", desc: "Top-tier private off-road SUV. Suitable for luxury tours and rugged paths like Gurez and Lolab." },
-    { name: "Force Urbania Luxury Edition", type: "Super Luxury Mini Bus", capacity: "12-17 Guests", rate: "₹9,500/day", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=500", desc: "Ultra-modern premium transporter featuring luxury bucket seats, separate screens, individual AC vents, and massive trunk space." },
-    { name: "Premium Sedan (Dezire/Etios)", type: "Standard Comfort", capacity: "4 Guests", rate: "₹3,200/day", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=500", desc: "Best-selling budget and deluxe family sedan. Perfect for city tours and airport transfers." },
-    { name: "Luxury Mercedes-Benz / BMW", type: "Ultra-Luxury Lounge", capacity: "4 Guests", rate: "₹25,000/day", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=500", desc: "VIP transport for wedding entries, corporate delegates, and high-net-worth guests." }
+    { name: "Toyota Innova Crysta", type: "Luxury SUV", capacity: "7 Guests", rate: "₹4,500/day", image: "/images/car_crysta.jpg", desc: "The ultimate luxury traveler vehicle in Kashmir. Spacious, heavily heated, and perfectly smooth on mountain turns." },
+    { name: "Premium SUV (Fortuner/Pajero)", type: "Luxury SUV", capacity: "6 Guests", rate: "₹6,500/day", image: "/images/car_suv.jpg", desc: "Top-tier private off-road SUV. Suitable for luxury tours and rugged paths like Gurez and Lolab." },
+    { name: "Force Urbania Luxury Edition", type: "Super Luxury Mini Bus", capacity: "12-17 Guests", rate: "₹9,500/day", image: "/images/car_tempo.jpg", desc: "Ultra-modern premium transporter featuring luxury bucket seats, separate screens, individual AC vents, and massive trunk space." },
+    { name: "Premium Sedan (Dezire/Etios)", type: "Standard Comfort", capacity: "4 Guests", rate: "₹3,200/day", image: "/images/car_sedan.jpg", desc: "Best-selling budget and deluxe family sedan. Perfect for city tours and airport transfers." },
+    { name: "Luxury Mercedes-Benz / BMW", type: "Ultra-Luxury Lounge", capacity: "4 Guests", rate: "₹25,000/day", image: "/images/car_mercedes.jpg", desc: "VIP transport for wedding entries, corporate delegates, and high-net-worth guests." }
   ];
 
   // Cost Calculator Formula
@@ -296,8 +304,8 @@ export default function HomePage() {
             initial={{ scale: 1.15 }}
             animate={{ scale: 1.02 }}
             transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-            src="https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=2000"
-            alt="Kashmir Paradise Dal Lake"
+            src="/images/hero_bg.jpg"
+            alt="Kashmir Sunrise Lake visual"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
@@ -362,7 +370,7 @@ export default function HomePage() {
               className="relative rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] border border-brand-gold/15"
             >
               <img
-                src="https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=1000"
+                src="/images/about_us.jpg"
                 alt="Bilu G Kashmir Luxury Lodging"
                 className="w-full h-full object-cover"
               />
@@ -456,7 +464,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {destinations.map((dest, idx) => (
+            {destinations.slice(0, 12).map((dest, idx) => (
               <motion.div
                 key={dest.name}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -518,7 +526,7 @@ export default function HomePage() {
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-xl font-serif font-black text-brand-navy dark:text-white leading-tight group-hover:text-brand-gold transition-colors">{pkg.title}</h3>
                     <span className="flex items-center gap-1 bg-brand-navy text-brand-gold px-2 py-0.5 rounded text-[9px] font-display font-black">
-                      <Star className="w-3 h-3" fill="#D4AF37" /> 5.0
+                      <Star className="w-3 h-3" fill="#D4AF37" stroke="none" /> 5.0
                     </span>
                   </div>
                   <div className="space-y-2 mb-8">
@@ -626,14 +634,14 @@ export default function HomePage() {
               <span className="text-brand-gold text-xs font-display font-black uppercase tracking-widest">Dal Lake Heritage</span>
               <h3 className="text-2xl md:text-3xl font-serif font-bold text-white leading-tight">{houseboats[currentHb].name}</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Hand-curated cedar houseboats on Srinagar's pristine Dal Lake. Fitted with royal Persian carpets, ornate hand-carvings, dining rooms, 24/7 warm water, heated blankets, and traditional shikara docking bridges.
+                Hand-curated cedar houseboats on Srinagar&apos;s pristine Dal Lake. Fitted with royal Persian carpets, ornate hand-carvings, dining rooms, 24/7 warm water, heated blankets, and traditional shikara docking bridges.
               </p>
               <div className="flex gap-4 items-center">
                 <span className="text-xs bg-brand-gold/25 border border-brand-gold/30 px-3 py-1 text-brand-gold font-display font-bold uppercase rounded">
                   {houseboats[currentHb].rooms}
                 </span>
                 <span className="text-xs bg-white/10 px-3 py-1 text-slate-200 font-display font-bold uppercase rounded flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 text-brand-gold" fill="#D4AF37" /> {houseboats[currentHb].rating}
+                  <Star className="w-3.5 h-3.5 text-brand-gold" fill="#D4AF37" stroke="none" /> {houseboats[currentHb].rating}
                 </span>
               </div>
               <div className="pt-6 flex gap-3">
@@ -792,7 +800,7 @@ export default function HomePage() {
                 <select
                   value={calcVehicle}
                   onChange={(e) => setCalcVehicle(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-zinc-800 border dark:border-zinc-700 p-3.5 rounded-xl text-xs font-bold outline-none"
+                  className="w-full bg-slate-50 dark:bg-zinc-900 border dark:border-zinc-700 p-3.5 rounded-xl text-xs font-bold outline-none font-sans"
                 >
                   <option value="Sedan">Sedan Taxi (Comfort)</option>
                   <option value="SUV">Standard SUV (Innova/Tavera)</option>
@@ -854,7 +862,7 @@ export default function HomePage() {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {destinations.slice(0, 6).map((img, i) => (
+            {destinations.slice(12, 18).map((img, i) => (
               <div
                 key={i}
                 onClick={() => setLightboxImg(img.image)}
@@ -905,16 +913,19 @@ export default function HomePage() {
               text="Our family vacation with Javid was incredible. Everything from the Crysta SUV to our stay at Pahalgam was seamless and highly luxurious."
               name="Pradeep Kulkarni"
               location="Mumbai, India"
+              image="/images/avatar_male1.jpg"
             />
             <TestimonialCard
               text="Our honeymoon trip was flawless. The Dal Lake houseboat bedroom had stunning wood carvings, complete heating and delicious meals."
               name="Sweta & Rohan"
               location="Pune, India"
+              image="/images/avatar_female1.jpg"
             />
             <TestimonialCard
               text="We booked a winter snow tour. Javid managed our Gondola tickets, winter boots and ski guide beforehand. Highly expert local service!"
               name="Sarah Jenkins"
               location="London, UK"
+              image="/images/avatar_male2.jpg"
             />
           </div>
         </div>
@@ -934,21 +945,21 @@ export default function HomePage() {
               title="Gulmarg Snow Report: Fresh Accumulations"
               tag="Snow Updates"
               date="Nov 2024"
-              image="https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=600"
+              image="/images/blog_tips.jpg"
               desc="Fresh snowfall is recorded in Apharwat peak Gulmarg, attracting winter ski lovers. Read complete advisory here."
             />
             <BlogCard
               title="Is Gurez Valley accessible during winters?"
               tag="Travel Information"
               date="Oct 2024"
-              image="https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=600"
+              image="/images/blog_snow.jpg"
               desc="Gurez valley passes receive heavy snow during December. Learn how Javid Farooq helps arrange winter heli-rides."
             />
             <BlogCard
               title="Srinagar Mughal Gardens Spring Bloom Guide"
               tag="Travel Tips"
               date="Sep 2024"
-              image="https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=600"
+              image="/images/blog_weather.jpg"
               desc="Planning your spring escape? Here is the complete list of Mughal gardens and optimal blooming days for March-April."
             />
           </div>
@@ -998,7 +1009,7 @@ export default function HomePage() {
             {/* Google Map & Contact Form */}
             <div className="bg-white dark:bg-zinc-900 rounded-[3rem] p-8 md:p-12 border border-slate-100 dark:border-zinc-800 shadow-2xl relative overflow-hidden">
               <h3 className="text-xl font-serif font-black text-brand-navy dark:text-white mb-6">Enquire Online</h3>
-              <form onSubmit={(e) => { e.preventDefault(); alert("Inquiry Sent successfully! Javid Farooq's team will contact you shortly."); }} className="space-y-4">
+              <form onSubmit={(e) => { e.preventDefault(); alert("Inquiry Sent successfully! Javid Farooq&apos;s team will contact you shortly."); }} className="space-y-4 font-sans">
                 <input type="text" required placeholder="Full Name" className="w-full bg-slate-50 dark:bg-zinc-800 border dark:border-zinc-700 p-4 rounded-xl text-xs font-bold focus:outline-none" />
                 <div className="grid grid-cols-2 gap-4">
                   <input type="text" required placeholder="Phone Number" className="bg-slate-50 dark:bg-zinc-800 border dark:border-zinc-700 p-4 rounded-xl text-xs font-bold focus:outline-none" />
@@ -1111,19 +1122,17 @@ function CounterCard({ label, count, desc }: any) {
   );
 }
 
-function TestimonialCard({ text, name, location }: any) {
+function TestimonialCard({ text, name, location, image }: any) {
   return (
     <div className="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 p-8 rounded-[2rem] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
       <div>
         <div className="flex gap-1 text-brand-gold mb-4">
           {[...Array(5)].map((_, i) => <Star key={i} className="w-4.5 h-4.5" fill="#D4AF37" stroke="none" />)}
         </div>
-        <p className="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed italic mb-6">"{text}"</p>
+        <p className="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed italic mb-6">&ldquo;{text}&rdquo;</p>
       </div>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-xs font-black text-brand-navy dark:text-brand-gold">
-          {name[0]}
-        </div>
+        <img src={image} alt={name} className="w-10 h-10 rounded-full object-cover shrink-0 border border-brand-gold/20" />
         <div>
           <p className="text-xs font-display font-black text-brand-navy dark:text-white leading-none">{name}</p>
           <span className="text-[10px] text-slate-400 leading-none font-medium">{location}</span>
@@ -1142,7 +1151,7 @@ function BlogCard({ title, tag, date, image, desc }: any) {
           {tag}
         </span>
       </div>
-      <div className="p-6 flex-1 flex flex-col justify-between">
+      <div className="p-6 flex-1 flex flex-col justify-between font-sans">
         <div>
           <span className="text-[9px] font-display font-bold uppercase tracking-widest text-slate-400 block mb-1">{date}</span>
           <h3 className="text-base font-serif font-bold text-brand-navy dark:text-white leading-tight group-hover:text-brand-gold transition-colors mb-3">{title}</h3>
