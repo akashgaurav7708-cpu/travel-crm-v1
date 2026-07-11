@@ -4,15 +4,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const images = [
-  { url: "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=800", title: "Dal Lake, Srinagar" },
-  { url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=800", title: "Gulmarg Highlands" },
-  { url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800", title: "Pahalgam Valley" },
-  { url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800", title: "Sonamarg Glaciers" },
-  { url: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=800", title: "Luxury Suite Living" },
-  { url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800", title: "Tulip Garden Bloom" },
-  { url: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800", title: "Gurez Pine Trails" },
-  { url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800", title: "Aru River Fields" },
-  { url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800", title: "Yusmarg Meadows" }
+  { url: "/images/dest_yusmarg.jpg", title: "Yusmarg Deep Woods" },
+  { url: "/images/dest_aharbal.jpg", title: "Aharbal Mountain Waterfall" },
+  { url: "/images/dest_sonmarg.jpg", title: "Sonamarg Glacial Meadows" },
+  { url: "/images/dest_srinagar.jpg", title: "Pari Mahal Sunset Terraces" },
+  { url: "/images/dest_lolab.jpg", title: "Kokernag Spring Gardens" },
+  { url: "/images/dest_gurez.jpg", title: "Gurez Pine Trails" },
+  { url: "/images/dest_pahalgam.jpg", title: "Lidder River Pahalgam" },
+  { url: "/images/dest_doodhpathri.jpg", title: "Yusmarg Pine Meadows" },
+  { url: "/images/dest_gulmarg.jpg", title: "Thajiwas Snow Slopes" }
 ];
 
 export default function GalleryPage() {

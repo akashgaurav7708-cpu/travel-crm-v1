@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Star, Sparkles, Building, Coffee, ShieldCheck, Heart } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/public/InquiryModal';
 
 const hotels = [
-  { id: 1, name: "The Khyber Himalayan Resort", class: "5-Star", location: "Gulmarg", price: "24,500", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=800", rating: 5.0, description: "Kashmir's premium 5-star ski resort nestled in pristine Apharwat hills, boasting central heating, luxury spa, and a heated glass indoor pool." },
-  { id: 2, name: "Taj Lake Palace Kashmir", class: "5-Star", location: "Srinagar", price: "28,000", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=800", rating: 5.0, description: "A floating royal paradise carved on Dal Lake, offering ultra-luxurious suites, personal butler services, and unparalleled lake views." },
-  { id: 3, name: "Radisson Blu Srinagar", class: "Luxury", location: "Srinagar", price: "14,500", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=800", rating: 4.8, description: "Modern luxury with authentic Kashmiri architecture. Perfect executive suites, multi-cuisine restaurants, and premier spa experiences." },
-  { id: 4, name: "Pine N Peak Resort", class: "Luxury", location: "Pahalgam", price: "16,000", image: "https://images.unsplash.com/photo-1616149175294-f286829767f4?auto=format&fit=crop&q=80&w=800", rating: 4.9, description: "Perched beautifully on Pahalgam hills, overlooking the roaring Lidder River. Warm wooden lounges, bonfires, and customized hospitality." },
-  { id: 5, name: "Grand Mumtaz Resort", class: "Premium", location: "Pahalgam", price: "11,500", image: "https://images.unsplash.com/photo-1610484507001-a18599484b3e?auto=format&fit=crop&q=80&w=800", rating: 4.7, description: "Traditional comfort combined with modern amenities. Features pristine garden settings, Wazwan delicacies, and cozy wood fireplaces." },
-  { id: 6, name: "Hotel Highlands Park", class: "Premium", location: "Gulmarg", price: "13,000", image: "https://images.unsplash.com/photo-1598305071114-175f32404099?auto=format&fit=crop&q=80&w=800", rating: 4.8, description: "A historic, iconic heritage resort in Gulmarg offering vintage lounge setups, stunning views of Mt. Apharwat, and local ski-guides." },
-  { id: 7, name: "Kolahoi Green Heights", class: "Deluxe", location: "Gulmarg", price: "8,500", image: "https://images.unsplash.com/photo-1621350672013-149b5c3e6669?auto=format&fit=crop&q=80&w=800", rating: 4.6, description: "Cozy rooms, centrally heated, located just minutes away from the Gondola boarding point. Ideal for couples and skiing families." },
-  { id: 8, name: "Royal Palace Residency", class: "Deluxe", location: "Srinagar", price: "7,000", image: "https://images.unsplash.com/photo-1505506005703-99757643e26f?auto=format&fit=crop&q=80&w=800", rating: 4.5, description: "A beautiful property in the heart of Srinagar, offering comfortable deluxe lodging, mountain views, and exceptional local service." }
+  { id: 1, name: "The Khyber Himalayan Resort", class: "5-Star", location: "Gulmarg", price: "24,500", image: "/images/hotel_khyber.jpg", rating: 5.0, description: "Kashmir's premium 5-star ski resort nestled in pristine Apharwat hills, boasting central heating, luxury spa, and a heated glass indoor pool." },
+  { id: 2, name: "Taj Lake Palace Kashmir", class: "5-Star", location: "Srinagar", price: "28,000", image: "/images/hotel_taj.jpg", rating: 5.0, description: "A floating royal paradise carved on Dal Lake, offering ultra-luxurious suites, personal butler services, and unparalleled lake views." },
+  { id: 3, name: "Radisson Blu Srinagar", class: "Luxury", location: "Srinagar", price: "14,500", image: "/images/hotel_radisson.jpg", rating: 4.8, description: "Modern luxury with authentic Kashmiri architecture. Perfect executive suites, multi-cuisine restaurants, and premier spa experiences." },
+  { id: 4, name: "Pine N Peak Resort", class: "Luxury", location: "Pahalgam", price: "16,000", image: "/images/hotel_pinepeak.jpg", rating: 4.9, description: "Perched beautifully on Pahalgam hills, overlooking the roaring Lidder River. Warm wooden lounges, bonfires, and customized hospitality." },
+  { id: 5, name: "Grand Mumtaz Resort", class: "Premium", location: "Pahalgam", price: "11,500", image: "/images/hotel_grandmumtaz.jpg", rating: 4.7, description: "Traditional comfort combined with modern amenities. Features pristine garden settings, Wazwan delicacies, and cozy wood fireplaces." },
+  { id: 6, name: "Hotel Highlands Park", class: "Premium", location: "Gulmarg", price: "13,000", image: "/images/hotel_highlands.jpg", rating: 4.8, description: "A historic, iconic heritage resort in Gulmarg offering vintage lounge setups, stunning views of Mt. Apharwat, and local ski-guides." },
+  { id: 7, name: "Kolahoi Green Heights", class: "Deluxe", location: "Gulmarg", price: "8,500", image: "/images/hotel_kolahoi.jpg", rating: 4.6, description: "Cozy rooms, centrally heated, located just minutes away from the Gondola boarding point. Ideal for couples and skiing families." },
+  { id: 8, name: "Royal Palace Residency", class: "Deluxe", location: "Srinagar", price: "7,000", image: "/images/hotel_royalpalace.jpg", rating: 4.5, description: "A beautiful property in the heart of Srinagar, offering comfortable deluxe lodging, mountain views, and exceptional local service." }
 ];
 
 export default function HotelsListing() {
@@ -87,9 +87,9 @@ export default function HotelsListing() {
                       </span>
                     </div>
                     <h3 className="text-xl font-serif font-black text-brand-navy dark:text-white group-hover:text-brand-gold transition-colors leading-tight">{h.name}</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{h.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">{h.description}</p>
                   </div>
-                  <div className="pt-6 mt-6 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between">
+                  <div className="pt-6 mt-6 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between font-sans">
                     <div>
                       <p className="text-[9px] font-display font-bold uppercase tracking-widest text-slate-400 mb-0.5">Starting At</p>
                       <p className="text-lg font-serif font-black text-brand-navy dark:text-white">₹{h.price}<span className="text-xs text-slate-400 font-medium"> / night</span></p>

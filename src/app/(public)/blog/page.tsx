@@ -10,7 +10,7 @@ const blogs = [
     tag: "Snow Updates",
     date: "November 24, 2024",
     author: "Javid Farooq",
-    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=800",
+    image: "/images/blog_tips.jpg",
     desc: "A massive western disturbance has triggered fresh, heavy snowfall across Apharwat Peaks in Gulmarg. Ski slopes are currently being packed by local departments. Learn complete road closures, winter tyre chains advisory, and Gondola ticket bookings here."
   },
   {
@@ -18,7 +18,7 @@ const blogs = [
     tag: "Travel Information",
     date: "October 18, 2024",
     author: "Javid Farooq",
-    image: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800",
+    image: "/images/blog_snow.jpg",
     desc: "Gurez Valley pass (Razdan Pass) typically closes during peak winter snowfalls (December to March). In this complete travel brief, learn how Bilu G Travels manages special winter permission permits and books helicopter flights to keep Gurez valley accessible for extreme explorers."
   },
   {
@@ -26,7 +26,7 @@ const blogs = [
     tag: "Travel Tips",
     date: "September 12, 2024",
     author: "Bilu G Team",
-    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
+    image: "/images/blog_weather.jpg",
     desc: "Planning your spring family vacation to Srinagar? Read our direct local advice on optimal dates to explore the Tulip Gardens, Chashme Shahi, Shalimar Gardens, and Nishat Bagh when the spring blossoms are at their peak."
   },
   {
@@ -34,7 +34,7 @@ const blogs = [
     tag: "Kashmir Food",
     date: "August 04, 2024",
     author: "Javid Farooq",
-    image: "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=800",
+    image: "/images/pkg_luxury.jpg",
     desc: "Wazwan is not just meals; it is a sacred culinary craft in Kashmir. Read Javid Farooq&apos;s personalized recommendations on authentic local chefs, the significance of the copper trami, and must-try dishes like Rista, Gushtaba, and Rogan Josh."
   }
 ];

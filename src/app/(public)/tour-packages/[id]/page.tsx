@@ -10,9 +10,9 @@ export default function PackageDetail() {
     duration: "5 Days / 4 Nights",
     price: "13,999",
     images: [
-      "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=1200",
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
+      "/images/pkg_4n5d.jpg",
+      "/images/pkg_5n6d.jpg",
+      "/images/pkg_6n7d.jpg"
     ],
     description: "Experience the quintessential charm of Kashmir with our Classic Valley tour. From the serene Dal Lake to the snow-capped peaks of Gulmarg, this package covers all the must-visit highlights with luxury and comfort.",
     inclusions: ["4 Nights Accommodation", "Daily Breakfast & Dinner", "Airport Transfers", "Private Sightseeing Car", "Shikara Ride", "All Tolls & Taxes"],

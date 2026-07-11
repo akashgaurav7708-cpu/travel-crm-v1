@@ -6,12 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/public/InquiryModal';
 
 const packages = [
-  { id: 1, name: "4 Nights 5 Days Kashmir", price: "13,999", duration: "4N/5D", image: "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=800", rating: 4.9, tags: ["Family", "Budget"] },
-  { id: 2, name: "5 Nights 6 Days Kashmir", price: "16,999", duration: "5N/6D", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800", rating: 5.0, tags: ["Luxury", "Honeymoon"] },
-  { id: 3, name: "6 Nights 7 Days Kashmir", price: "19,999", duration: "6N/7D", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800", rating: 4.8, tags: ["Adventure", "Group Tour"] },
-  { id: 4, name: "Honeymoon Special Package", price: "18,999", duration: "5N/6D", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800", rating: 4.9, tags: ["Honeymoon", "Luxury"] },
-  { id: 5, name: "Luxury Kashmir Experience", price: "34,999", duration: "7N/8D", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800", rating: 5.0, tags: ["Luxury", "Family"] },
-  { id: 6, name: "Gurez Valley Expedition", price: "17,999", duration: "4N/5D", image: "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800", rating: 4.7, tags: ["Offbeat", "Adventure"] },
+  { id: 1, name: "4 Nights 5 Days Kashmir", price: "13,999", duration: "4N/5D", image: "/images/pkg_4n5d.jpg", rating: 4.9, tags: ["Family", "Budget"] },
+  { id: 2, name: "5 Nights 6 Days Kashmir", price: "16,999", duration: "5N/6D", image: "/images/pkg_5n6d.jpg", rating: 5.0, tags: ["Luxury", "Honeymoon"] },
+  { id: 3, name: "6 Nights 7 Days Kashmir", price: "19,999", duration: "6N/7D", image: "/images/pkg_6n7d.jpg", rating: 4.8, tags: ["Adventure", "Group Tour"] },
+  { id: 4, name: "Honeymoon Special Package", price: "18,999", duration: "5N/6D", image: "/images/pkg_honeymoon.jpg", rating: 4.9, tags: ["Honeymoon", "Luxury"] },
+  { id: 5, name: "Luxury Kashmir Experience", price: "34,999", duration: "7N/8D", image: "/images/pkg_luxury.jpg", rating: 5.0, tags: ["Luxury", "Family"] },
+  { id: 6, name: "Gurez Valley Expedition", price: "17,999", duration: "4N/5D", image: "/images/pkg_adventure.jpg", rating: 4.7, tags: ["Offbeat", "Adventure"] },
 ];
 
 export default function PackagesListing() {

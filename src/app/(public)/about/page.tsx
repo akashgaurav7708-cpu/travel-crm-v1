@@ -27,7 +27,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="relative rounded-[3rem] overflow-hidden h-[450px] shadow-2xl border border-brand-gold/15"
           >
-            <img src="https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?auto=format&fit=crop&q=80&w=1000" alt="Kashmir Dal Lake Home" className="w-full h-full object-cover" />
+            <img src="/images/about_us.jpg" alt="Kashmir Dal Lake Home" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent"></div>
           </motion.div>
 
