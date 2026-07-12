@@ -111,7 +111,7 @@ export default function SuperAdminDashboard() {
                                       </div>
                                       <div>
                                          <p className="font-black text-white">{c.name}</p>
-                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 mt-0.5">{c.subdomain}.ex-employee.travel</p>
+                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 mt-0.5">{c.subdomain}.travelos.bilug.travel</p>
                                       </div>
                                    </div>
                                 </td>
