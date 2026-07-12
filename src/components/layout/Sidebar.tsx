@@ -136,7 +136,7 @@ const Sidebar = () => {
     <div className="flex h-full w-64 flex-col bg-slate-900 text-white overflow-y-auto no-scrollbar">
       <div className="flex h-20 items-center px-6 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
         <h1 className="text-base font-black tracking-tight text-white leading-tight">
-          Ex-Employee v0.2 <br/>
+          TravelOS <br/>
           <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest">by Bilu G</span>
         </h1>
       </div>

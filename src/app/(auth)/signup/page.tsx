@@ -25,7 +25,7 @@ export default function SignUpPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
       <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-xl">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-black text-slate-900">Ex-Employee v0.2</h1>
+          <h1 className="text-3xl font-black text-slate-900 text-brand-navy">TravelOS</h1>
           <p className="mt-2 text-slate-500 font-medium">Create Agency Account</p>
           <p className="mt-1 text-xs text-blue-600 font-black uppercase tracking-widest">by Bilu G</p>
         </div>

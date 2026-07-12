@@ -1,4 +1,4 @@
-# Ex-Employee v0.2 by Bilu G - Enterprise SaaS Changelog
+# TravelOS by Bilu G - Enterprise SaaS Changelog
 
 ## Core Infrastructure
 - **Multi-tenant SaaS Architecture**: Independent tenant environments with strict RLS isolation.

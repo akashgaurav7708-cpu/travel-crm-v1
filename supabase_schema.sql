@@ -1,4 +1,4 @@
--- Ex-Employee v0.2 by Bilu G - Enterprise Commercial SaaS Database Schema
+-- TravelOS by Bilu G - Enterprise Commercial SaaS Database Schema
 
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

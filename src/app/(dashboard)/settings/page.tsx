@@ -43,7 +43,7 @@ export default function SettingsPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black tracking-tight text-slate-900 text-white leading-tight">
-             Ex-Employee v0.2 <span className="text-blue-500">Global Settings</span>
+             TravelOS <span className="text-blue-500">Global Settings</span>
           </h2>
           <p className="text-slate-500 font-bold">Configure agency identity, SaaS multitenancy, and document branding by Bilu G.</p>
         </div>
@@ -87,10 +87,10 @@ export default function SettingsPage() {
             <div className="p-10 space-y-8">
               {activeTab === 'General' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <InputGroup label="Agency Name" value="Ex-Employee Travel v0.2" />
+                  <InputGroup label="Agency Name" value="TravelOS by Bilu G" />
                   <InputGroup label="Entity ID" value="SaaS-TENANT-8492" disabled />
-                  <InputGroup label="Primary Domain" value="portal.ex-employee.travel" />
-                  <InputGroup label="Support Email" value="ops@ex-employee.travel" />
+                  <InputGroup label="Primary Domain" value="portal.travelos.bilug.travel" />
+                  <InputGroup label="Support Email" value="ops@travelos.bilug.travel" />
                   <div className="md:col-span-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Headquarters Address</label>
                     <textarea className="w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" rows={3}>102 Innovation Drive, Silicon Valley, CA 94043</textarea>
