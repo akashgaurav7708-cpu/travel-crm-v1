@@ -21,8 +21,14 @@ export async function middleware(request: NextRequest) {
     '/offbeat-kashmir',
     '/gallery',
     '/contact',
+    '/about',
     '/about-us',
+    '/blog',
+    '/houseboats',
+    '/kashmir-hotels',
+    '/kashmir-transport',
     '/hotels-houseboats',
+    '/instagram-carousel',
   ];
 
   const isPublicRoute = publicRoutes.some(route =>

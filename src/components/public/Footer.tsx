@@ -64,6 +64,7 @@ export default function Footer() {
               <li><Link href="/hotels" className="hover:text-brand-gold transition-colors font-medium">Premium Hotels</Link></li>
               <li><Link href="/houseboats" className="hover:text-brand-gold transition-colors font-medium">Dal Lake Houseboats</Link></li>
               <li><Link href="/transport" className="hover:text-brand-gold transition-colors font-medium">Private Fleet & Cars</Link></li>
+              <li><Link href="/instagram-carousel" className="hover:text-brand-gold transition-colors font-medium">Instagram Carousel Builder</Link></li>
             </ul>
           </div>
 
